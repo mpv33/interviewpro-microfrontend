@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
       port: parseInt(env.VITE_PORT) || 3001,
       strictPort: true,
     },
+    base: './',
     plugins: [
       tailwindcss(),
       react(),
