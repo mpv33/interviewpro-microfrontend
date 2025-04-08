@@ -1,6 +1,0 @@
-{
-    "buildCommand": "turbo run build --filter=apps/host",
-    "outputDirectory": "apps/host/dist",
-    "installCommand": "npm install"
-  }
-  

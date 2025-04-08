@@ -1,6 +1,0 @@
-{
-    "buildCommand": "turbo run build --filter=apps/dsa-app",
-    "outputDirectory": "apps/dsa-app/dist",
-    "installCommand": "npm install"
-  }
-  
