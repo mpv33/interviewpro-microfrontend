@@ -1,0 +1,142 @@
+import Head from 'next/head';
+
+<Head>
+  <title>InterviewPro - Master React.js Interview Preparation</title>
+  <meta name="description" content="Master React.js for your upcoming interview with InterviewPro. Learn key concepts like component lifecycle, hooks, state management, performance optimization, and more." />
+  <meta name="keywords" content="React.js, interview preparation, React hooks, state management, performance optimization, JSX, components, context API, testing React apps" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="author" content="InterviewPro" />
+  <meta name="robots" content="index, follow" />
+  
+  {/* Open Graph meta tags */}
+  <meta property="og:title" content="InterviewPro - Master React.js Interview Preparation" />
+  <meta property="og:description" content="Ace your React.js interviews with deep dives into hooks, components, and more. Learn best practices, state management, and advanced concepts." />
+  <meta property="og:image" content="/images/react-interview.png" />
+  <meta property="og:url" content="https://interviewpro.com/react" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  
+  {/* Twitter meta tags */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="InterviewPro - Master React.js Interview Preparation" />
+  <meta name="twitter:description" content="Comprehensive guide for React.js interview preparation. Learn key concepts and best practices for your next interview." />
+  <meta name="twitter:image" content="https://interviewpro.com/images/react-interview.png" />
+  
+  {/* Canonical link */}
+  <link rel="canonical" href="https://interviewpro.com/react" />
+  
+  {/* Favicon */}
+  <link rel="icon" href="/favicon.ico" />
+</Head>
+
+<p className="text-center text-3xl font-bold my-6">**Master React.js Concepts for Your Interview**</p>
+
+Prepare effectively for your React.js interview with **InterviewPro**. Our comprehensive guide covers key React topics, ensuring you have the confidence and knowledge to excel.
+
+## 📚 Key Topics
+
+### **1. React Fundamentals**
+
+- **What is React and why?:** A JavaScript library for building user interfaces with reusable components, developed by Facebook.
+- **JSX:** Syntax extension for writing HTML-like code in JavaScript.
+- **Virtual DOM:** Optimizes performance by updating only changed parts of the real DOM.
+- **Props vs State:** Props are for passing data to components, while state is for managing internal component data.
+- **Components:** Functional and class-based, with a lifecycle for managing state and effects.
+
+
+### **2. React Router**
+
+- React Router: Managing Navigation and Routing in Single-Page Applications
+- Nested Routing and Layouts: Using `Outlet` for Nested Routes
+- Programmatic Navigation: Navigating with the `useNavigate` Hook
+- Route Guards and Authentication: Protecting Routes with `useLocation` and `Navigate`
+- Dynamic Route Matching: Using Route Parameters and `useParams`
+- Scroll Restoration: Maintaining Scroll Position with `useLocation` and `useEffect`
+- Error Handling in Routing: Handling 404 Pages and Route Errors
+- Code Splitting and Lazy Loading: Optimizing Performance with `React.lazy` and `Suspense`
+- Custom Hooks for Routing: Managing Complex Routing Logic with Custom Hooks
+- Advanced Route Matching: Using `matchRoutes` for Route Matching Logic
+
+### **3. React Hooks**
+
+- **useState:** Manage local component state in functional components.
+- **useEffect:** Handle side effects and cleanup after component updates.
+- **useContext:** Share state across components without prop drilling.
+- **useReducer:** Advanced state management alternative to `useState`, useful for complex state logic.
+- **useCallback:** Memoize callback functions to prevent unnecessary re-renders.
+- **useMemo:** Memoize computed values to optimize performance.
+- **useRef:** Access and persist values across renders without causing re-renders.
+- **useImperativeHandle:** Customize the instance value exposed when using `ref` with `forwardRef`.
+- **useLayoutEffect:** Similar to `useEffect`, but fires synchronously after all DOM mutations.
+- **Custom Hooks:** Create reusable logic encapsulated in custom hooks for complex functionalities.
+  
+### **4. State Management**
+
+- **React Context API:** Efficient state sharing across components.
+- **Redux:** Centralized state management for large-scale applications.
+- **MobX:** Reactive state management using observables.
+- **Zustand:** Lightweight state management alternative.
+  
+
+
+### **5. Performance Optimization**
+
+1. **Code Splitting**: Use `import()` to split code and load only when needed, reducing initial bundle size.
+2. **Lazy Loading**: Apply `React.lazy()` with `Suspense` to load components on demand.
+3. **Memoization and Avoid Re-renders**: Use `React.memo()` and `useMemo()` to cache components and expensive calculations.
+4. **Event Handlers**: Use `useCallback()` to memoize functions and prevent re-creation on every render.
+5. **Virtualization**: Use `react-window` to render only visible list items, optimizing large lists.
+6. **Debounce/Throttle**: Optimize event handling with debounce/throttle to limit function execution frequency.
+7. **Efficient Keys**: Ensure stable, unique keys in lists to avoid unnecessary component re-renders.
+8. **CSS & Images**: Optimize asset sizes with CSS preloading, image compression, and lazy loading.
+9. **Tree Shaking**: Remove unused code from bundles with Webpack’s tree-shaking capabilities.
+
+### **6. Testing in React**
+
+- **Unit Testing with Jest:** Writing tests for React components using Jest.
+- **Integration Testing with React Testing Library:** Testing component interaction with the DOM.
+- **End-to-End Testing:** Using Cypress or Selenium to test user flows in the entire application.
+
+### **7. Advanced React**
+
+- **Refs and the DOM:** Use `useRef` to interact with and persist DOM elements.
+- **Portals:** Render children into a different part of the DOM tree.
+- **Error Boundaries:** Gracefully handle runtime errors in React components.
+- **Webpack:** Bundle modules and manage assets for JavaScript applications.
+- **Babel:** Compile modern JavaScript into backward-compatible versions for older browsers.
+- **How Web URLs Work in a Browser:** Learn how URLs are processed by browsers to retrieve web pages.
+- **Latest React 19 Feature:** Stay updated with the newest React 19 enhancements.
+- **React Query:** Simplify data fetching, caching, and synchronization in React apps.
+- **REST vs GraphQL** : camparison in both
+
+
+### **8. Coding Challenges**
+
+Practice these React-specific coding challenges to sharpen your problem-solving skills:
+  
+1. **Todo List**: Implement a todo list with features for adding, editing, deleting, and filtering tasks.
+
+2. **Countdown Application**: Build a customizable countdown timer with start, pause, and reset features.
+
+3. **Autocomplete Search**: Create an autocomplete search component that suggests results as the user types.
+
+4. **Nested Comments**: Develop a comment section with nested replies, including adding, editing, and deleting comments.
+
+5. **File Explorer**: Create a file explorer with nested folders and expand/collapse functionality using Tailwind CSS.
+
+6. **Shopping Cart**: Construct a shopping cart system with product management, cart functionalities, and checkout.
+
+7. **Pagination**: Build a pagination component with page numbers and navigation buttons for large datasets.
+
+8. **Infinite Scroll**: Implement infinite scrolling to load more items as the user scrolls down.
+  
+## 🌟 Why Choose InterviewPro?
+
+- **Focused Coverage:** Essential React concepts for interviews.
+- **Clear Explanations:** Practical examples and best practices.
+- **Targeted Practice:** Frequently asked React interview questions.
+- **Confidence Building:** Get ready to tackle any React.js interview challenge.
+
+**Prepare, practice, and succeed with InterviewPro. Your go-to guide for mastering React.js interview concepts.**
+
+Happy Learning! 🚀

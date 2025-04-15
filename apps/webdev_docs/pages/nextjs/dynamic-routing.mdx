@@ -1,0 +1,273 @@
+### Dynamic Routing in Next.js
+
+Dynamic routing in Next.js allows you to create routes that can change based on parameters or handle multiple segments dynamically. This flexibility is crucial for building applications with complex routing needs, such as blogs, e-commerce sites, or dashboards.
+
+Here’s an in-depth look at the various aspects of dynamic routing in Next.js, including examples to illustrate each concept:
+
+---
+
+#### **1. Dynamic Routes: Creating Routes with Parameters**
+
+Dynamic routes enable you to create pages that vary based on parameters, using file names with square brackets. This allows you to handle variable parts of the URL.
+
+**Example: Dynamic Route with `[id].js`**
+
+**File Structure:**
+```
+/pages/posts/[id].js
+```
+
+**Code:**
+
+```jsx
+// pages/posts/[id].js
+import { useRouter } from 'next/router';
+
+export async function getStaticProps(context) {
+  const { id } = context.params;
+  const res = await fetch(`https://api.example.com/posts/${id}`);
+  const post = await res.json();
+
+  return {
+    props: { post },
+    revalidate: 10,
+  };
+}
+
+export default function Post({ post }) {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return (
+    <div>
+      <h1>Post ID: {id}</h1>
+      <h2>{post.title}</h2>
+      <p>{post.content}</p>
+    </div>
+  );
+}
+```
+
+- **File Name**: `[id].js`
+- **Purpose**: Create a route where the `id` part of the URL is dynamic. For example, `/posts/1` and `/posts/2` would render different pages based on the `id` value.
+
+---
+
+#### **2. `getStaticPaths`: Generating Dynamic Paths for Pre-Rendered Content**
+
+When using `getStaticProps` for dynamic routes, `getStaticPaths` is used to specify which paths should be pre-rendered at build time.
+
+**Example: Using `getStaticPaths` with `[id].js`**
+
+**File Structure:**
+```
+/pages/posts/[id].js
+```
+
+**Code:**
+
+```jsx
+// pages/posts/[id].js
+export async function getStaticPaths() {
+  const res = await fetch('https://api.example.com/posts');
+  const posts = await res.json();
+
+  const paths = posts.map(post => ({
+    params: { id: post.id.toString() },
+  }));
+
+  return {
+    paths,
+    fallback: 'blocking', // Or 'false' or 'true'
+  };
+}
+
+export async function getStaticProps(context) {
+  const { id } = context.params;
+  const res = await fetch(`https://api.example.com/posts/${id}`);
+  const post = await res.json();
+
+  return {
+    props: { post },
+    revalidate: 10,
+  };
+}
+
+export default function Post({ post }) {
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </div>
+  );
+}
+```
+
+- **Function**: `getStaticPaths`
+- **Purpose**: Define which paths should be generated at build time. It returns an array of path objects with the dynamic parameters, enabling Next.js to generate pages for those paths.
+
+---
+
+#### **3. Catch-All Routes: Handling Multiple Dynamic Segments**
+
+Catch-all routes allow you to handle multiple dynamic segments in the URL. This is useful for nested or complex routing scenarios.
+
+**Example: Using Catch-All Routes with `[...slug].js`**
+
+**File Structure:**
+```
+/pages/posts/[...slug].js
+```
+
+**Code:**
+
+```jsx
+// pages/posts/[...slug].js
+export async function getStaticProps(context) {
+  const { slug } = context.params;
+  const res = await fetch(`https://api.example.com/posts/${slug.join('/')}`);
+  const post = await res.json();
+
+  return {
+    props: { post },
+    revalidate: 10,
+  };
+}
+
+export async function getStaticPaths() {
+  // Example paths for demonstration purposes
+  return {
+    paths: [
+      { params: { slug: ['post', '1'] } },
+      { params: { slug: ['post', '2'] } },
+    ],
+    fallback: 'blocking',
+  };
+}
+
+export default function Post({ post }) {
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </div>
+  );
+}
+```
+
+- **File Name**: `[...slug].js`
+- **Purpose**: Handle URLs with multiple segments, such as `/posts/category/post-id`. The `slug` parameter will be an array containing all segments of the URL.
+
+---
+
+#### **4. Shallow Routing: Updating URL without a Page Refresh**
+
+Shallow routing allows you to change the URL without running data fetching methods again or triggering a page refresh. This is useful for updating query parameters or state in the URL while maintaining the current page state.
+
+**Example: Using Shallow Routing**
+
+**File Structure:**
+```
+/pages/posts/[id].js
+```
+
+**Code:**
+
+```jsx
+// pages/posts/[id].js
+import { useRouter } from 'next/router';
+
+export default function Post() {
+  const router = useRouter();
+
+  const updateQuery = () => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, newParam: 'value' },
+    }, undefined, { shallow: true });
+  };
+
+  return (
+    <div>
+      <h1>Post ID: {router.query.id}</h1>
+      <button onClick={updateQuery}>Update Query</button>
+    </div>
+  );
+}
+```
+
+- **Method**: `router.push` with `{ shallow: true }`
+- **Purpose**: Update the URL while keeping the page state, without a full reload. Useful for scenarios like filtering or sorting on a single page.
+
+---
+
+#### **5. Nested Routes: Structuring File-Based Routing System**
+
+Nested routes are managed by creating a nested folder structure within the `pages` directory. This allows you to create routes that reflect the hierarchy of your application.
+
+**Example: Nested Routes**
+
+**File Structure:**
+```
+/pages
+  /blog
+    /[id].js
+    /category
+      /[category].js
+```
+
+**Code for `/pages/blog/[id].js`:**
+
+```jsx
+// pages/blog/[id].js
+export async function getStaticProps(context) {
+  const { id } = context.params;
+  const res = await fetch(`https://api.example.com/blog/${id}`);
+  const post = await res.json();
+
+  return {
+    props: { post },
+  };
+}
+
+export default function BlogPost({ post }) {
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </div>
+  );
+}
+```
+
+**Code for `/pages/blog/category/[category].js`:**
+
+```jsx
+// pages/blog/category/[category].js
+export async function getStaticProps(context) {
+  const { category } = context.params;
+  const res = await fetch(`https://api.example.com/blog/category/${category}`);
+  const posts = await res.json();
+
+  return {
+    props: { posts },
+  };
+}
+
+export default function Category({ posts }) {
+  return (
+    <div>
+      <h1>Posts in Category</h1>
+      <ul>
+        {posts.map(post => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+- **Folder Structure**: Nested folders represent nested routes.
+- **Purpose**: Create hierarchical routes that reflect the structure of the application, such as blog categories and individual posts.
+

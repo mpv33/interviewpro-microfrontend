@@ -1,0 +1,597 @@
+# <p  id="animated-text" className='text-center'> Coding Challenges</p>
+
+In JavaScript interviews, coding challenges test your problem-solving and algorithmic skills. These challenges often involve manipulating data structures, performing operations on strings and arrays, and solving complex problems efficiently.
+
+
+### **Array Manipulation**
+
+#### 1. Flattening Arrays
+**Question**: Convert nested arrays into a single-level array.
+
+**Solution**:
+```javascript
+function flattenArray(arr) {
+  let result = [];
+
+  arr.forEach(item => {
+    if (Array.isArray(item)) {
+      result = result.concat(flattenArray(item));
+    } else {
+      result.push(item);
+    }
+  });
+
+  return result;
+}
+
+// Sample Input
+const nestedArray = [1, [2, [3, 4], 5], 6];
+console.log(flattenArray(nestedArray)); // Output: [1, 2, 3, 4, 5, 6]
+
+```
+**Explanation**: The `flat` method with `Infinity` depth flattens all levels of nested arrays into a single array.
+
+#### 2. Finding Unique Elements
+**Question**: Remove duplicates from an array.
+
+**Solution**:
+```javascript
+function removeDuplicates(arr) {
+  const uniqueArray = [];
+  const seen = {};
+  
+  arr.forEach(item => {
+    if (!seen[item]) {
+      seen[item] = true;
+      uniqueArray.push(item);
+    }
+  });
+  
+  return uniqueArray;
+}
+
+// Sample Input
+const inputArray = [1, 2, 2, 3, 4, 4, 5];
+console.log(removeDuplicates(inputArray)); // Output: [1, 2, 3, 4, 5]
+
+```
+**Hint**: Using a `Set` automatically removes duplicate elements, and the spread operator (`...`) converts the `Set` back to an array.
+
+#### 3. Sorting Algorithms
+
+- **Bubble Sort**
+  ```javascript
+  function bubbleSort(arr) {
+    let n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+      for (let j = 0; j < n - i - 1; j++) {
+        if (arr[j] > arr[j + 1]) {
+          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+        }
+      }
+    }
+    return arr;
+  }
+
+  // Sample Input
+  const unsortedArray = [64, 34, 25, 12, 22, 11, 90];
+  console.log(bubbleSort(unsortedArray)); // Output: [11, 12, 22, 25, 34, 64, 90]
+  ```
+
+- **Quick Sort**
+  ```javascript
+  function quickSort(arr) {
+    if (arr.length <= 1) return arr;
+    let pivot = arr[arr.length - 1];
+    let left = [], right = [];
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (arr[i] < pivot) left.push(arr[i]);
+      else right.push(arr[i]);
+    }
+    return [...quickSort(left), pivot, ...quickSort(right)];
+  }
+
+  // Sample Input
+  const unsortedArray = [64, 34, 25, 12, 22, 11, 90];
+  console.log(quickSort(unsortedArray)); // Output: [11, 12, 22, 25, 34, 64, 90]
+  ```
+
+#### 4. Finding Largest/Smallest Element
+
+**Finding Largest Element**:
+```javascript
+function findLargest(arr) {
+  return Math.max(...arr);
+}
+
+// Sample Input
+const numbers = [5, 7, 2, 9, 1];
+console.log(findLargest(numbers)); // Output: 9
+```
+
+**Finding Smallest Element**:
+```javascript
+function findSmallest(arr) {
+  return Math.min(...arr);
+}
+
+// Sample Input
+const numbers = [5, 7, 2, 9, 1];
+console.log(findSmallest(numbers)); // Output: 1
+```
+
+#### 5. Array Rotation
+**Question**: Rotate an array by a given number of positions.
+
+**Solution**:
+```javascript
+function rotateArray(arr, k) {
+  const n = arr.length;
+  k = k % n; // In case k is greater than the length of the array
+
+  function reverse(start, end) {
+    while (start < end) {
+      [arr[start], arr[end]] = [arr[end], arr[start]]; // Swap elements
+      start++;
+      end--;
+    }
+  }
+
+  // Step 1: Reverse the entire array
+  reverse(0, n - 1);
+  
+  // Step 2: Reverse the first part (0 to k-1)
+  reverse(0, k - 1);
+  
+  // Step 3: Reverse the second part (k to n-1)
+  reverse(k, n - 1);
+  
+  return arr;
+}
+
+// Sample Input
+const inputArray = [1, 2, 3, 4, 5, 6, 7];
+const positions = 3;
+console.log(rotateArray(inputArray, positions)); // Output: [5, 6, 7, 1, 2, 3, 4]
+
+```
+
+#### 6. Finding Missing Elements
+**Question**: Identify missing numbers in a sequence.
+
+**Solution**:
+```javascript
+function findMissingElement(arr, n) {
+  const expectedSum = (n * (n + 1)) / 2;
+  const actualSum = arr.reduce((acc, num) => acc + num, 0);
+
+  return expectedSum - actualSum;
+}
+
+// Sample Input
+const inputArray = [1, 2, 4, 6, 3, 7];
+const n = 7;
+console.log(findMissingElement(inputArray, n)); // Output: 5
+
+```
+
+#### 7. Subarray Sum
+**Question**: Find the maximum sum subarray using Kadane’s algorithm.
+
+**Solution**:
+```javascript
+function maxSubArraySum(arr) {
+  let maxSoFar = arr[0];
+  let maxEndingHere = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    maxEndingHere = Math.max(arr[i], maxEndingHere + arr[i]);
+    maxSoFar = Math.max(maxSoFar, maxEndingHere);
+  }
+  return maxSoFar;
+}
+
+// Sample Input
+const array = [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+console.log(maxSubArraySum(array)); // Output: 6
+```
+
+**Explanation**: Kadane’s algorithm maintains the maximum sum of the subarray ending at the current position and the overall maximum.
+
+#### 8. Pair Sum
+**Question**: Find pairs that sum to a target value.
+
+**Solution**:
+```javascript
+function findPairs(arr, target) {
+  const seen = new Set();
+  const pairs = [];
+  arr.forEach(num => {
+    const complement = target - num;
+    if (seen.has(complement)) {
+      pairs.push([complement, num]);
+    }
+    seen.add(num);
+  });
+  return pairs;
+}
+
+// Sample Input
+const numbers = [1, 2, 3, 4, 3, 5];
+const target = 6;
+console.log(findPairs(numbers, target)); // Output: [[3, 3], [2, 4]]
+```
+
+**Explanation**: Use a set to track seen numbers and check if the complement of the current number exists in the set.
+
+#### 9. Shuffling Arrays
+**Question**: Randomly shuffle array elements.
+
+**Solution**:
+```javascript
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Sample Input
+const array = [1, 2, 3, 4, 5];
+console.log(shuffleArray(array)); // Output: [e.g., 4, 1, 5, 3, 2]
+```
+
+**Explanation**: Use the Fisher-Yates algorithm to shuffle the array in-place.
+
+### **String Manipulation**
+
+#### 1. Reversing Strings
+**Question**: Reverse a string.
+
+**Solution**:
+```javascript
+function reverseString(str) {
+  return str.split('').reverse().join('');
+}
+
+// Sample Input
+const inputString = "hello";
+console.log(reverseString(inputString)); // Output: "olleh"
+```
+
+**Explanation**: Convert the string to an array of characters, reverse it, and then join it back into a string.
+
+#### 2. Palindrome Check
+**Question**: Check if a string is a palindrome.
+
+**Solution**:
+```javascript
+function isPalindrome(str) {
+  const cleaned = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  return cleaned === cleaned.split('').reverse().join('');
+}
+
+// Sample Input
+const inputString = "A man, a plan, a canal, Panama";
+console.log(isPalindrome(inputString)); // Output: true
+```
+
+**Explanation**: Clean the string by removing non-alphanumeric characters and checking if it reads the same backward.
+
+#### 3. Anagram Detection
+**Question**: Check if two strings are anagrams.
+
+**Solution**:
+```javascript
+function areAnagrams(str1, str2) {
+  const sortedStr1 = str1.replace(/[^a-zA-Z0-9]/g, '').toLowerCase().split('').sort().join('');
+  const sortedStr2 = str2.replace(/[^a-zA-Z0-9]/g, '').toLowerCase().split('').sort().join('');
+  return sortedStr1 === sortedStr2;
+}
+
+// Sample Input
+const string1 = "listen";
+const string2 = "silent";
+console.log(areAnagrams(string1, string2)); // Output: true
+```
+
+**Explanation**: Remove non-alphanumeric characters, sort the characters, and compare the sorted strings.
+
+#### 4. Substring Search
+**Question**: Find occurrences of a substring in a string.
+
+**Solution**:
+```javascript
+function countOccurrences(str, sub) {
+  let count = 0;
+  let pos = 0;
+  while ((pos = str.indexOf(sub, pos)) !== -
+
+1) {
+    count++;
+    pos += sub.length;
+  }
+  return count;
+}
+
+// Sample Input
+const mainString = "The quick brown fox jumps over the lazy dog. The dog is happy.";
+const substring = "The";
+console.log(countOccurrences(mainString, substring)); // Output: 2
+```
+
+**Explanation**: Use `indexOf` to find each occurrence of the substring and count them.
+
+#### 5. String Compression
+**Question**: Compress a string using run-length encoding.
+
+**Solution**:
+```javascript
+function compressString(str) {
+  let compressed = '';
+  let count = 1;
+  for (let i = 1; i < str.length; i++) {
+    if (str[i] === str[i - 1]) {
+      count++;
+    } else {
+      compressed += str[i - 1] + count;
+      count = 1;
+    }
+  }
+  compressed += str[str.length - 1] + count;
+  return compressed.length < str.length ? compressed : str;
+}
+
+// Sample Input
+const inputString = "aaabbccccd";
+console.log(compressString(inputString)); // Output: "a3b2c4d1"
+```
+
+**Explanation**: Traverse the string, count consecutive characters, and build the compressed string.
+
+#### 6. Longest Unique Substring
+**Question**: Find the longest substring with unique characters.
+
+**Solution**:
+```javascript
+function longestUniqueSubstring(str) {
+  let start = 0;
+  let maxLength = 0;
+  let seen = new Map();
+
+  for (let end = 0; end < str.length; end++) {
+    if (seen.has(str[end])) {
+      start = Math.max(seen.get(str[end]) + 1, start);
+    }
+    seen.set(str[end], end);
+    maxLength = Math.max(maxLength, end - start + 1);
+  }
+
+  return maxLength;
+}
+
+// Sample Input
+const inputString = "abcabcbb";
+console.log(longestUniqueSubstring(inputString)); // Output: 3 (substring "abc")
+```
+
+**Explanation**: Use a sliding window with a map to keep track of the last seen index of each character.
+
+#### 7. Character Frequency
+**Question**: Count the frequency of each character in a string.
+
+**Solution**:
+```javascript
+function characterFrequency(str) {
+  const freq = {};
+  for (const char of str) {
+    freq[char] = (freq[char] || 0) + 1;
+  }
+  return freq;
+}
+
+// Sample Input
+const inputString = "hello";
+console.log(characterFrequency(inputString)); // Output: { h: 1, e: 1, l: 2, o: 1 }
+```
+
+**Explanation**: Use an object to count occurrences of each character.
+
+#### 8. Remove Duplicate Characters
+**Question**: Remove duplicate characters from a string.
+
+**Solution**:
+```javascript
+function removeDuplicates(str) {
+  return [...new Set(str)].join('');
+}
+
+// Sample Input
+const inputString = "aabbcc";
+console.log(removeDuplicates(inputString)); // Output: "abc"
+```
+
+**Explanation**: Use a `Set` to remove duplicates and then convert it back to a string.
+
+#### 9. String Permutations
+**Question**: Generate permutations of a string.
+
+**Solution**:
+```javascript
+function permutations(str) {
+  const results = [];
+  
+  function permute(arr, memo = '') {
+    if (memo.length === str.length) {
+      results.push(memo);
+    } else {
+      for (let i = 0; i < arr.length; i++) {
+        const curr = arr.slice();
+        const next = curr.splice(i, 1);
+        permute(curr, memo + next);
+      }
+    }
+  }
+
+  permute(str.split(''));
+  return results;
+}
+
+// Sample Input
+const inputString = "abc";
+console.log(permutations(inputString)); // Output: [ 'abc', 'acb', 'bac', 'bca', 'cab', 'cba' ]
+```
+
+**Explanation**: Use recursion to generate permutations by selecting each character and permuting the remaining characters.
+
+#### 10. Reverse Words
+**Question**: Reverse the order of words in a string while preserving the positions.
+
+**Solution**:
+```javascript
+function reverseWords(str) {
+  return str.split(' ').reverse().join(' ');
+}
+
+// Sample Input
+const inputString = "Hello World";
+console.log(reverseWords(inputString)); // Output: "World Hello"
+```
+
+**Explanation**: Split the string into words, reverse the array, and join it back into a string.
+
+### **DOM Challenges**
+
+#### 1. Dynamic Form Creation
+**Question**: Create a form based on user input.
+
+**Solution**:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic Form</title>
+</head>
+<body>
+  <input type="text" id="inputField" placeholder="Enter number of fields" />
+  <button id="createFormButton">Create Form</button>
+  <form id="dynamicForm"></form>
+
+  <script>
+    document.getElementById('createFormButton').addEventListener('click', () => {
+      const numFields = parseInt(document.getElementById('inputField').value, 10);
+      const form = document.getElementById('dynamicForm');
+      form.innerHTML = '';
+
+      for (let i = 0; i < numFields; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = `Field ${i + 1}`;
+        form.appendChild(input);
+        form.appendChild(document.createElement('br'));
+      }
+    });
+  </script>
+</body>
+</html>
+```
+
+**Explanation**: Creates a form dynamically based on user input. It adds text fields to the form according to the number entered by the user.
+
+#### 2. Event Handling
+**Question**: Implement event delegation for handling dynamic content.
+
+**Solution**:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Delegation</title>
+</head>
+<body>
+  <div id="container">
+    <button class="dynamicButton">Button 1</button>
+    <button class="dynamicButton">Button 2</button>
+  </div>
+  <button id="addButton">Add New Button</button>
+
+  <script>
+    document.getElementById('container').addEventListener('click', (event) => {
+      if (event.target.classList.contains('dynamicButton')) {
+        alert('Dynamic button clicked!');
+      }
+    });
+
+    document.getElementById('addButton').addEventListener('click', () => {
+      const newButton = document.createElement('button');
+      newButton.className = 'dynamicButton';
+      newButton.textContent = 'New Button';
+      document.getElementById('container').appendChild(newButton);
+    });
+  </script>
+</body>
+</html>
+```
+
+**Explanation**: Uses event delegation to handle clicks on dynamically added buttons. A new button can be added to the container, and clicks on any button are handled by the event listener.
+
+#### 3. Drag and Drop
+**Question**: Implement drag-and-drop functionality.
+
+**Solution**:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drag and Drop</title>
+  <style>
+    .draggable {
+      width: 100px;
+      height: 100px;
+      background: red;
+      color: white;
+      text-align: center;
+      line-height: 100px;
+      margin: 10px;
+      cursor: move;
+    }
+    .dropzone {
+      width: 200px;
+      height: 200px;
+      border: 2px dashed #ccc;
+      margin: 10px;
+      text-align: center;
+      line-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="draggable" class="draggable" draggable="true">Drag me</div>
+  <div id="dropzone" class="dropzone">Drop here</div>
+
+  <script>
+    const draggable = document.getElementById('draggable');
+    const dropzone = document.getElementById('dropzone');
+
+    draggable.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', 'dragging');
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.getData('text/plain') === 'dragging') {
+        dropzone.appendChild(draggable);
+      }
+    });
+  </script>
+</body>
+</html>
+```
+
+**Explanation**: Implements drag-and-drop by setting the draggable attribute, handling `dragstart`, `dragover`, and `drop` events.
+
+These solutions cover a range of common coding problems with detailed explanations, sample inputs, and expected outputs to help with understanding and preparing for JavaScript interviews.

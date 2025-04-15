@@ -1,0 +1,744 @@
+# <p  id="animated-text" className='text-center my-4'> Understanding Asynchronous JavaScript </p>
+
+## Asynchronous JavaScript
+
+Asynchronous JavaScript allows programs to perform tasks in the background, without blocking the main thread of execution. It is crucial for tasks that take time to complete, such as fetching data from a server or reading files from a disk, while ensuring the rest of the code continues to run smoothly. Here’s an in-depth explanation of the core concepts:
+
+---
+
+### 1. **Event Loop**
+
+The **event loop** is at the heart of asynchronous JavaScript, ensuring that asynchronous operations are handled properly without blocking the main thread.
+
+- **Call Stack**: This is where synchronous code is executed, operating on a Last In, First Out (LIFO) basis. Functions are pushed onto the stack when called and popped off when completed.
+  
+- **Callback Queue (Task Queue)**: Holds functions (callbacks) that are waiting to be executed after asynchronous tasks (e.g., `setTimeout`, event handlers).
+  
+- **Event Loop**: Continuously checks if the call stack is empty. If the call stack is empty, the event loop picks functions from the callback queue and pushes them to the call stack for execution.
+
+**Example:**
+```javascript
+console.log('Start');
+
+setTimeout(() => {
+  console.log('Timeout');
+}, 0);
+
+console.log('End');
+```
+
+**Execution Flow**:
+- `console.log('Start')` runs immediately.
+- `setTimeout` schedules a callback function to run after a delay but does not block the code.
+- `console.log('End')` runs next.
+- Finally, when the call stack is empty, the callback from `setTimeout` is executed.
+
+---
+
+### 2. **Promises**
+
+A **Promise** is an object representing the eventual completion or failure of an asynchronous operation.
+
+- **Pending**: The initial state of the promise, waiting for resolution or rejection.
+- **Fulfilled**: The operation completed successfully, and the promise has a result.
+- **Rejected**: The operation failed, and the promise has an error.
+
+**Example:**
+```javascript
+const fetchData = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('Data fetched');
+  }, 1000);
+});
+
+fetchData
+  .then(result => console.log(result))  // 'Data fetched'
+  .catch(error => console.log(error));
+```
+
+- **Explanation**: The `fetchData` promise resolves after 1 second, printing `'Data fetched'`.
+
+---
+
+### 3. **async/await**
+
+`async/await` provides a way to write asynchronous code in a synchronous-like manner. The `await` keyword is used to pause the execution of an `async` function until the promise is resolved.
+
+**Example:**
+```javascript
+async function fetchData() {
+  try {
+    const response = await fetch('https://api.example.com/data');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+fetchData();
+```
+
+- **Explanation**: The `await` pauses the function execution until the promise from `fetch` is resolved. Errors are handled using `try/catch`.
+
+---
+
+### 4. **Callback Functions**
+
+A **callback function** is passed as an argument to another function and executed after a certain task is completed. Callbacks were the traditional way to handle asynchronous tasks before Promises.
+
+**Example:**
+```javascript
+function fetchData(callback) {
+  setTimeout(() => {
+    callback('Data received');
+  }, 1000);
+}
+
+fetchData(data => {
+  console.log(data); // 'Data received'
+});
+```
+
+- **Explanation**: After 1 second, the callback function is executed, printing `'Data received'`.
+
+---
+
+### 5. **Promise.all()**
+
+`Promise.all()` takes an array of promises and returns a single promise that resolves when all of the promises in the array have resolved or rejects when any promise is rejected.
+
+**Example:**
+```javascript
+const promise1 = Promise.resolve('First');
+const promise2 = Promise.resolve('Second');
+
+Promise.all([promise1, promise2])
+  .then(results => console.log(results))  // ['First', 'Second']
+  .catch(error => console.log(error));
+```
+
+- **Explanation**: Both promises resolve, and the results are logged as an array.
+
+---
+
+### 6. **Promise.race()**
+
+`Promise.race()` returns a promise that resolves or rejects as soon as one of the promises in the array resolves or rejects.
+
+**Example:**
+```javascript
+const promise1 = new Promise((resolve) => setTimeout(resolve, 500, 'First'));
+const promise2 = new Promise((resolve) => setTimeout(resolve, 100, 'Second'));
+
+Promise.race([promise1, promise2])
+  .then(result => console.log(result))  // 'Second'
+  .catch(error => console.log(error));
+```
+
+- **Explanation**: The second promise resolves first, so `'Second'` is printed.
+
+---
+
+### 7. **Promise.allSettled()**
+
+`Promise.allSettled()` waits for all promises to either resolve or reject and returns an array of the results with their status.
+
+**Example:**
+```javascript
+const promise1 = Promise.resolve('First');
+const promise2 = Promise.reject('Second');
+
+Promise.allSettled([promise1, promise2])
+  .then(results => console.log(results));
+  // [{status: 'fulfilled', value: 'First'}, {status: 'rejected', reason: 'Second'}]
+```
+
+- **Explanation**: The results array contains the status of each promise, whether fulfilled or rejected.
+
+---
+
+### 8. **Promise.any()**
+
+`Promise.any()` resolves when any of the promises fulfill, or rejects if all of them are rejected.
+
+**Example:**
+```javascript
+const promise1 = Promise.reject('First failed');
+const promise2 = Promise.resolve('Second succeeded');
+
+Promise.any([promise1, promise2])
+  .then(result => console.log(result))  // 'Second succeeded'
+  .catch(error => console.log(error));
+```
+
+- **Explanation**: Since the second promise resolves first, `'Second succeeded'` is printed.
+
+---
+
+### 9. **Microtasks vs. Macrotasks**
+
+- **Microtasks**: These are processed immediately after the current task (e.g., promises). They have higher priority and are processed before any macrotasks.
+- **Macrotasks**: Include `setTimeout`, `setInterval`, and I/O events. They are processed after microtasks.
+
+**Example:**
+```javascript
+console.log('Start');
+
+setTimeout(() => console.log('Macrotask - Timeout'), 0);
+
+Promise.resolve().then(() => console.log('Microtask - Promise'));
+
+console.log('End');
+```
+
+- **Explanation**: `'Microtask - Promise'` is printed before `'Macrotask - Timeout'` because microtasks are processed first.
+
+---
+
+### 10. **Error Propagation**
+
+Errors in promises are propagated through the promise chain and can be handled with `.catch()` or `try/catch` in `async/await`.
+
+**Example:**
+```javascript
+const fetchData = new Promise((resolve, reject) => {
+  setTimeout(() => reject('Error occurred'), 1000);
+});
+
+fetchData
+  .then(result => console.log(result))
+  .catch(error => console.log(error));  // 'Error occurred'
+```
+
+- **Explanation**: The error is caught and handled by the `.catch()` method.
+
+---
+
+### 11. **setTimeout and setInterval**
+
+- **`setTimeout()`** schedules a function to run after a certain delay.
+- **`setInterval()`** schedules a function to run repeatedly at specified intervals.
+
+**Example:**
+```javascript
+console.log('Start');
+
+setTimeout(() => console.log('Timeout'), 1000); // After 1 second
+setInterval(() => console.log('Interval'), 2000); // Every 2 seconds
+
+console.log('End');
+```
+
+---
+
+### 12. **Generators**
+
+**Generators** are functions that can pause and resume execution using the `yield` keyword. They are useful for managing asynchronous flows.
+
+**Example:**
+```javascript
+function* fetchData() {
+  const result = yield new Promise(resolve => setTimeout(() => resolve('Data fetched'), 1000));
+  console.log(result);
+}
+
+const gen = fetchData();
+const promise = gen.next().value;
+
+promise.then(result => gen.next(result));
+```
+
+- **Explanation**: The generator yields a promise and resumes execution once the promise resolves.
+
+---
+
+By understanding these concepts, you'll have a solid foundation for handling asynchronous tasks in JavaScript effectively.
+
+
+### 13. Promises sequence
+
+
+**You are tasked with implementing a task runner that manages multiple asynchronous operations with various requirements:**
+
+1. **Concurrency Control**: Run a set of tasks concurrently, but limit the number of tasks that can run at the same time. The concurrency can change dynamically based on previous task results.
+   
+2. **Sequential Execution with Conditional Logic**: Ensure that tasks run sequentially, but if any task fails, it should be isolated, allowing the rest of the tasks to proceed. Additionally, based on the result of a task, the next task might need to be skipped or the concurrency limit might need to be adjusted.
+   
+3. **Retry Logic**: For tasks that fail, implement a retry mechanism with exponential backoff.
+   
+4. **Timeout Handling**: If any task exceeds a given timeout, abort it and move to the next task.
+   
+5. **Failure Isolation**: If any task fails, continue processing the remaining tasks without affecting their execution.
+   
+6. **Promise States and `Promise.allSettled()`**: After all tasks have been executed, return the status of each task—whether they were fulfilled or rejected—using `Promise.allSettled()`.
+
+---
+
+ **Solution:**
+
+```javascript
+async function executeTasks(tasks, concurrencyLimit, timeout = 5000) {
+  const results = [];
+  let concurrency = concurrencyLimit;
+  const executing = [];
+
+  // Helper function for retry logic with exponential backoff
+  const retryTask = async (task, retries = 3, delay = 500) => {
+    try {
+      return await task();
+    } catch (err) {
+      if (retries === 0) throw err;
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return retryTask(task, retries - 1, delay * 2); // Exponential backoff
+    }
+  };
+
+  // Helper function for executing a task with a timeout
+  const withTimeout = (task) => {
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject("Timeout exceeded"), timeout)
+    );
+    return Promise.race([task, timeoutPromise]);
+  };
+
+  // Execute tasks with concurrency control
+  for (let i = 0; i < tasks.length; i++) {
+    const task = tasks[i];
+
+    const taskPromise = retryTask(() => withTimeout(task()))
+      .then(result => {
+        results.push({ status: 'fulfilled', result });
+        // Dynamically adjust concurrency based on result
+        if (result === 'increaseConcurrency') concurrency++;
+      })
+      .catch(err => {
+        results.push({ status: 'rejected', reason: err });
+      });
+
+    executing.push(taskPromise);
+
+    if (executing.length >= concurrency) {
+      await Promise.race(executing); // Control concurrency
+    }
+  }
+
+  // Wait for all tasks to finish
+  await Promise.all(executing);
+
+  // Return the final status of all tasks
+  return results;
+}
+
+// Example tasks (for illustration)
+const task1 = () => new Promise(resolve => setTimeout(() => resolve("Task 1 completed"), 1000));
+const task2 = () => new Promise((_, reject) => setTimeout(() => reject("Task 2 failed"), 2000));
+const task3 = () => new Promise(resolve => setTimeout(() => resolve("increaseConcurrency"), 3000));
+const task4 = () => new Promise(resolve => setTimeout(() => resolve("Task 4 completed"), 1000));
+
+const tasks = [task1, task2, task3, task4];
+
+// Example usage
+executeTasks(tasks, 2, 1500)
+  .then(results => console.log(results))
+  .catch(err => console.error("Execution error:", err));
+```
+
+---
+
+**Explanation**:
+
+- **Concurrency Control**: We limit the number of concurrently running tasks by tracking them in the `executing` array and using `Promise.race()` to wait for the earliest task to settle before starting the next one. The `concurrency` value dynamically increases based on task results (e.g., `'increaseConcurrency'`).
+
+- **Sequential Execution with Conditional Logic**: The tasks are executed sequentially, but if a task fails (e.g., task2), the error is handled and logged, and subsequent tasks continue executing.
+
+- **Retry Logic with Exponential Backoff**: If a task fails, it will automatically retry up to 3 times with increasing delays between attempts.
+
+- **Timeout Handling**: Each task has a timeout applied via `Promise.race()`, ensuring tasks that exceed the specified time are aborted.
+
+- **Failure Isolation**: If any task fails, it’s caught and logged, and execution continues with the remaining tasks.
+
+- **Promise.allSettled()**: The final result is collected using `Promise.allSettled()`, which ensures that the result of each task is returned, whether it was fulfilled or rejected, providing a comprehensive status report.
+
+---
+
+ **Sample Input/Output:**
+
+**Input:**
+```javascript
+const tasks = [
+  task1,  // Resolves after 1s
+  task2,  // Rejects after 2s
+  task3,  // Resolves with 'increaseConcurrency' after 3s
+  task4   // Resolves after 1s
+];
+```
+
+**Output:**
+```javascript
+[
+  { status: 'fulfilled', result: 'Task 1 completed' },
+  { status: 'rejected', reason: 'Task 2 failed' },
+  { status: 'fulfilled', result: 'increaseConcurrency' },
+  { status: 'fulfilled', result: 'Task 4 completed' }
+]
+```
+
+This solution handles all the aspects of concurrency, retries, timeouts, and sequential task execution while ensuring that failures don’t halt subsequent tasks, making it a robust and scalable solution for complex promise-based workflows.
+
+## **Async Js Tricky Output**
+
+Let's go through the answers to each of the tricky JavaScript questions and explain the reasoning behind them:
+
+---
+
+### 1. **Order of Execution (Event Loop and Promises)**
+
+```javascript
+console.log('A');
+setTimeout(() => console.log('B'), 0);
+Promise.resolve().then(() => console.log('C'));
+console.log('D');
+```
+
+**Output**:
+```
+A
+D
+C
+B
+```
+
+**Explanation**:
+1. `console.log('A')` runs first (synchronous).
+2. `setTimeout` schedules the callback for later (after 0ms), placing it in the **macrotask** queue.
+3. `Promise.resolve().then()` schedules the `then()` callback in the **microtask** queue.
+4. `console.log('D')` runs (synchronous).
+5. Since the **microtasks** queue is processed before the **macrotask** queue, the promise's `then()` callback logs `'C'` before the `setTimeout` logs `'B'`.
+
+---
+
+### 2. **Promise and setTimeout Interaction**
+
+```javascript
+setTimeout(() => console.log('1'), 0);
+Promise.resolve().then(() => console.log('2'));
+Promise.resolve().then(() => {
+  console.log('3');
+  setTimeout(() => console.log('4'), 0);
+});
+console.log('5');
+```
+
+**Output**:
+```
+5
+2
+3
+1
+4
+```
+
+**Explanation**:
+1. `console.log('5')` runs first (synchronous).
+2. The two `Promise.resolve()` callbacks are queued as **microtasks**, so `'2'` and `'3'` are printed next (in order).
+3. The `setTimeout` callbacks (`'1'` and `'4'`) are placed in the **macrotask** queue and executed after the microtasks.
+
+---
+
+### 3. **Chaining Promises**
+
+```javascript
+const promise = new Promise((resolve, reject) => {
+  console.log('A');
+  resolve();
+  console.log('B');
+});
+
+promise.then(() => {
+  console.log('C');
+});
+
+console.log('D');
+```
+
+**Output**:
+```
+A
+B
+D
+C
+```
+
+**Explanation**:
+1. `'A'` and `'B'` are logged during the promise creation (synchronous execution).
+2. The `then()` callback is a **microtask**, so it is queued to run after synchronous code.
+3. `'D'` is logged synchronously.
+4. `'C'` is logged after synchronous code is done, as part of the microtask queue.
+
+---
+
+### 4. **setTimeout vs Promise Timing**
+
+```javascript
+setTimeout(() => console.log('timeout'), 0);
+Promise.resolve().then(() => console.log('promise'));
+console.log('sync');
+```
+
+**Output**:
+```
+sync
+promise
+timeout
+```
+
+**Explanation**:
+1. `console.log('sync')` runs first (synchronous).
+2. The promise's `then()` callback is added to the **microtask** queue and will execute before the **macrotask** (setTimeout).
+3. `console.log('promise')` runs after `sync` because microtasks are processed before macrotasks.
+4. Finally, the `setTimeout` callback logs `'timeout'`.
+
+---
+
+### 5. **async/await Timing**
+
+```javascript
+async function async1() {
+  console.log('A');
+  await async2();
+  console.log('B');
+}
+
+async function async2() {
+  console.log('C');
+}
+
+console.log('D');
+async1();
+console.log('E');
+```
+
+**Output**:
+```
+D
+A
+C
+E
+B
+```
+
+**Explanation**:
+1. `'D'` is logged first (synchronous).
+2. `async1()` starts, and `'A'` is logged.
+3. `async2()` runs immediately and logs `'C'`.
+4. The `await` causes `async1()` to pause until the promise resolves, allowing synchronous code to continue.
+5. `'E'` is logged next (synchronous).
+6. After all synchronous code is done, `'B'` is logged (after `await` resumes).
+
+---
+
+### 6. **Promise.all with Delays**
+
+```javascript
+const p1 = new Promise((resolve) => setTimeout(() => resolve('First'), 100));
+const p2 = new Promise((resolve) => setTimeout(() => resolve('Second'), 50));
+const p3 = new Promise((resolve) => setTimeout(() => resolve('Third'), 75));
+
+Promise.all([p1, p2, p3]).then((values) => {
+  console.log(values);
+});
+```
+
+**Output**:
+```
+["First", "Second", "Third"]
+```
+
+**Explanation**:
+- `Promise.all()` waits for **all** promises to resolve. Even though `p2` resolves first, it waits for `p1` and `p3` to resolve.
+- Once all promises are resolved, the `then()` block runs, logging the values in the **order** of the promises in the array, not in the order they resolved.
+
+---
+
+### 7. **Promise Resolution Timing**
+
+```javascript
+console.log('Start');
+
+setTimeout(() => {
+  console.log('Timeout');
+}, 0);
+
+const promise = new Promise((resolve) => {
+  console.log('Promise created');
+  resolve('Promise resolved');
+});
+
+promise.then((result) => console.log(result));
+
+console.log('End');
+```
+
+**Output**:
+```
+Start
+Promise created
+End
+Promise resolved
+Timeout
+```
+
+**Explanation**:
+1. `'Start'` and `'Promise created'` are logged synchronously.
+2. The promise resolves immediately, but the `then()` callback is queued as a **microtask**.
+3. `'End'` is logged (synchronous).
+4. The **microtask** (`then()`) runs, logging `'Promise resolved'`.
+5. Finally, the **macrotask** (`setTimeout`) runs, logging `'Timeout'`.
+
+---
+
+### 8. **Multiple async/await with setTimeout**
+
+```javascript
+async function async1() {
+  console.log('A');
+  await async2();
+  console.log('B');
+}
+
+async function async2() {
+  setTimeout(() => {
+    console.log('C');
+  }, 0);
+  console.log('D');
+}
+
+async1();
+console.log('E');
+```
+
+**Output**:
+```
+A
+D
+E
+B
+C
+```
+
+**Explanation**:
+1. `'A'` is logged (synchronous).
+2. `async2()` is called and `'D'` is logged (synchronous).
+3. The `setTimeout` schedules `'C'` for later, but doesn't run yet.
+4. `await` pauses `async1()` at this point.
+5. `'E'` is logged (synchronous).
+6. After the synchronous code, the `await` finishes, logging `'B'`.
+7. Finally, the `setTimeout` callback logs `'C'`.
+
+---
+
+### 9. **Microtask vs Macrotask Priority**
+
+```javascript
+Promise.resolve().then(() => console.log('Microtask 1'));
+
+setTimeout(() => {
+  console.log('Macrotask 1');
+  Promise.resolve().then(() => console.log('Microtask 2'));
+}, 0);
+
+setTimeout(() => console.log('Macrotask 2'), 0);
+
+console.log('Synchronous');
+```
+
+**Output**:
+```
+Synchronous
+Microtask 1
+Macrotask 1
+Microtask 2
+Macrotask 2
+```
+
+**Explanation**:
+1. `'Synchronous'` is logged first (synchronous).
+2. The promise's `then()` callback logs `'Microtask 1'` (queued as a **microtask**).
+3. The two `setTimeout` callbacks are **macrotasks** and will run after the microtasks.
+4. `'Macrotask 1'` is logged.
+5. After `Macrotask 1`, a new **microtask** logs `'Microtask 2'`.
+6. Finally, `'Macrotask 2'` is logged.
+
+---
+
+### 10. **Error Handling in Promises**
+
+```javascript
+Promise.resolve()
+  .then(() => {
+    throw new Error('Error in promise');
+  })
+  .then(() => {
+    console.log('Second .then');
+  })
+  .catch((error) => {
+    console.log('Caught:', error.message);
+  })
+  .then(() => {
+    console.log('After catch');
+  });
+```
+
+**Output**:
+```
+Caught: Error in promise
+After catch
+```
+
+**Explanation**:
+1. An error is thrown in the first `then()` block, causing the promise to reject.
+2. The error is caught in the `catch()` block, which logs the error message `'Caught: Error in promise'`.
+3. The `then()` block after `catch()` still executes, logging `'After catch'`.
+
+---
+
+### 11. **async/await and Promise Interaction**
+
+```javascript
+async function async1() {
+  console.log('A');
+  await async2();
+  console.log('B');
+}
+
+async function async2() {
+  console.log('C');
+  return Promise.resolve().then(() => console.log('D'));
+}
+
+async1();
+console.log('E');
+```
+
+**Output**:
+```
+A
+C
+E
+D
+B
+```
+
+**Explanation**:
+1. `'A'` and `'C'` are logged synchronously.
+2. The `await` pauses `async1()` after `'C'` is logged, allowing `'E'` to
+
+ be logged (synchronous).
+3. The promise inside `async2()` resolves and logs `'D'`.
+4. After the `await` finishes, `'B'` is logged.
+
+---
+
+By understanding how synchronous and asynchronous code, microtasks (promises), and macrotasks (setTimeout) interact in JavaScript's event loop, you can predict the output of these tricky code snippets.
+

@@ -1,0 +1,850 @@
+# <p  id="animated-text" className='text-center'> Advance JavaScript Concepts</p>
+
+
+##  Most asked JavaScript polyfill 
+
+#### 1. Polyfill for `map` method
+
+Here’s how you can create a custom `map` function without using the `call` method:
+
+```javascript
+if (!Array.prototype.customMap) {
+  Array.prototype.customMap = function(callback, thisArg) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.customMap called on null or undefined');
+    }
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    const result = [];
+    for (let i = 0; i < this.length; i++) {
+      if (i in this) {
+        result.push(callback(this[i], i, thisArg));
+      }
+    }
+    return result;
+  };
+}
+```
+
+**Explanation:**
+
+- **Purpose:** `customMap` creates a new array with the results of calling a provided function on every element in the calling array.
+- **Functionality:** Initializes an empty array `result`. It iterates through the array, applying the `callback` function to each element and pushing the result into `result`. The `thisArg` is passed directly as a parameter to the callback, allowing for context passing without using `call`.
+
+**Example Usage:**
+
+```javascript
+const multiplier = { factor: 3 };
+const numbers = [1, 2, 3, 4];
+
+const multiplied = numbers.customMap(function(number, index, context) {
+  return number * context.factor;
+}, multiplier);
+
+console.log('customMap result:', multiplied); // Output: [3, 6, 9, 12]
+```
+
+#### 2. Polyfill for  `filter` method
+
+Here’s how to create a custom `filter` function without the `call` method:
+
+```javascript
+if (!Array.prototype.customFilter) {
+  Array.prototype.customFilter = function(callback, thisArg) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.customFilter called on null or undefined');
+    }
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    const result = [];
+    for (let i = 0; i < this.length; i++) {
+      if (i in this && callback(this[i], i, thisArg)) {
+        result.push(this[i]);
+      }
+    }
+    return result;
+  };
+}
+```
+
+**Explanation:**
+
+- **Purpose:** `customFilter` creates a new array with all elements that pass the test implemented by the provided function.
+- **Functionality:** Iterates through the array, applying the `callback` function to each element. If the `callback` returns `true`, the element is added to the `result` array. The `thisArg` is passed directly to the callback, allowing context to be managed without `call`.
+
+**Example Usage:**
+
+```javascript
+const filterObj = { threshold: 2 };
+const numbers = [1, 2, 3, 4];
+
+const filtered = numbers.customFilter(function(number, index, context) {
+  return number > context.threshold;
+}, filterObj);
+
+console.log('customFilter result:', filtered); // Output: [3, 4]
+```
+
+#### 3. Polyfill for `reduce` method
+
+Here’s how to implement a custom `reduce` function without using `call`:
+
+```javascript
+if (!Array.prototype.customReduce) {
+  Array.prototype.customReduce = function(callback, initialValue) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.customReduce called on null or undefined');
+    }
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+
+    const len = this.length;
+    if (len === 0 && arguments.length === 1) {
+      throw new TypeError('Reduce of empty array with no initial value');
+    }
+
+    let accumulator = arguments.length >= 2 ? initialValue : this[0];
+    let startIndex = arguments.length >= 2 ? 0 : 1;
+
+    for (let i = startIndex; i < len; i++) {
+      if (i in this) {
+        accumulator = callback(accumulator, this[i], i, this);
+      }
+    }
+    return accumulator;
+  };
+}
+```
+
+**Explanation:**
+
+- **Purpose:** `customReduce` executes a reducer function on each element of the array, resulting in a single output value.
+- **Functionality:** Starts with an optional `initialValue`. If not provided, uses the first element as the initial accumulator value. Iterates through the array, applying the `callback` function to accumulate a result. The context management does not use `call`, so the callback function receives `this` directly.
+
+**Example Usage:**
+
+```javascript
+const numbers = [1, 2, 3, 4];
+
+const sum = numbers.customReduce(function(accumulator, number) {
+  return accumulator + number;
+}, 0);
+
+console.log('customReduce result:', sum); // Output: 10
+```
+
+These implementations provide a custom way to handle array operations, giving you control over array transformations and reducing reliance on built-in methods.
+
+
+
+#### 4.  Polyfill for `call` Method
+
+```javascript
+if (!Function.prototype.customCall) {
+  Function.prototype.customCall = function(context, ...args) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Not callable');
+    }
+    
+    context = context || globalThis; // Default to global object if context is null/undefined
+    const fn = Symbol(); // Use a unique symbol to avoid property collisions
+    context[fn] = this; // Assign the function to the context object
+    
+    const result = context[fn](...args); // Invoke the function with provided arguments
+    
+    delete context[fn]; // Clean up by deleting the temporary property
+    return result; // Return the result of the function call
+  };
+}
+```
+
+**Example Usage:**
+
+```javascript
+function greet(greeting, punctuation) {
+  return `${greeting}, ${this.name}${punctuation}`;
+}
+
+const person = { name: 'John' };
+console.log(greet.customCall(person, 'Hello', '!')); // Output: "Hello, John!"
+```
+
+
+
+#### 5. Polyfill for `apply` Method
+
+```javascript
+if (!Function.prototype.customApply) {
+  Function.prototype.customApply = function(context, args) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Not callable');
+    }
+    
+    context = context || globalThis; // Default to global object if context is null/undefined
+    const fn = Symbol(); // Use a unique symbol to avoid property collisions
+    context[fn] = this; // Assign the function to the context object
+    
+    const result = context[fn](...(args || [])); // Spread the arguments array to call the function
+    
+    delete context[fn]; // Clean up by deleting the temporary property
+    return result; // Return the result of the function call
+  };
+}
+```
+
+**Example Usage:**
+
+```javascript
+function greet(greeting, punctuation) {
+  return `${greeting}, ${this.name}${punctuation}`;
+}
+
+const person = { name: 'John' };
+console.log(greet.customApply(person, ['Hello', '!'])); // Output: "Hello, John!"
+```
+
+---
+
+#### 6. Polyfill for `bind` Method
+
+```javascript
+if (!Function.prototype.customBind) {
+  Function.prototype.customBind = function(context, ...bindArgs) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Not callable');
+    }
+    
+    const fn = this; // Store the reference to the function
+    return function(...callArgs) {
+      return fn.customApply(context, [...bindArgs, ...callArgs]); // Combine bindArgs and callArgs
+    };
+  };
+}
+```
+
+**Example Usage:**
+
+```javascript
+function greet(greeting, punctuation) {
+  return `${greeting}, ${this.name}${punctuation}`;
+}
+
+const person = { name: 'John' };
+const boundGreet = greet.customBind(person, 'Hello');
+console.log(boundGreet('!')); // Output: "Hello, John!"
+```
+
+
+**Explanation:**
+
+1. **Use of `Symbol`:**
+   - `Symbol` is used in both `call` and `apply` polyfills to create a unique property on the `context` object, ensuring that the function doesn’t overwrite any existing properties. This adds robustness and prevents bugs.
+
+2. **Context Defaulting:**
+   - In all polyfills, `context` defaults to `globalThis` (or `window` in the browser, `global` in Node.js) if `null` or `undefined` is passed, mimicking the behavior of the native `call`, `apply`, and `bind` methods.
+
+3. **Efficient Argument Handling:**
+   - The spread operator (`...args`) is used to handle arguments efficiently, whether passing them directly (in `call`) or as an array (in `apply`).
+
+4. **Combination of Arguments in `bind`:**
+   - The `bind` polyfill creates a closure that combines arguments passed during binding (`bindArgs`) with those passed during the function call (`callArgs`). This ensures that the function can be partially applied and then called later with additional arguments.
+
+#### 7. Polyfill for `Promise.all` 
+
+To create a polyfill for `Promise.all`, we need to implement a function that accepts an array of promises (or values) and returns a new promise that resolves with an array of resolved values, or rejects with the reason of the first rejected promise.
+
+Here’s the implementation:
+
+```javascript
+if (!Promise.all) {
+    Promise.all = function(promises) {
+        return new Promise((resolve, reject) => {
+            if (!Array.isArray(promises)) {
+                return reject(new TypeError('Promise.all accepts an array'));
+            }
+
+            let remaining = promises.length;
+            const results = new Array(remaining);
+
+            if (remaining === 0) {
+                return resolve([]);
+            }
+
+            promises.forEach((promise, index) => {
+                Promise.resolve(promise)
+                    .then(value => {
+                        results[index] = value;
+                        remaining--;
+
+                        if (remaining === 0) {
+                            resolve(results);
+                        }
+                    })
+                    .catch(reject);
+            });
+        });
+    };
+}
+```
+
+**Explanation:**
+
+- **Handling Non-Promise Values**: The polyfill uses `Promise.resolve(promise)` to ensure that any non-promise value is treated as a resolved promise. This allows the function to handle arrays containing a mix of promises and regular values.
+
+- **Early Exit for Empty Arrays**: If the input array is empty, the polyfill immediately resolves with an empty array, optimizing performance by avoiding unnecessary operations.
+
+- **Efficient Completion Tracking**: The polyfill uses a `remaining` counter, initialized to the length of the promises array. Each time a promise resolves, the counter is decremented. When `remaining` reaches zero, it means all promises have resolved, and the function resolves with the array of results.
+
+- **First Rejection Handling**: If any promise in the array rejects, the polyfill immediately rejects the entire `Promise.all`, passing along the rejection reason.
+
+This implementation is both concise and efficient, covering all edge cases (e.g., handling of non-promise values, empty arrays, and early rejection) while ensuring the minimal amount of work is done.
+
+**Example Usage:**
+
+```javascript
+// Example with resolved promises
+const promise1 = Promise.resolve(3);
+const promise2 = 42; // This will be treated as a resolved promise
+const promise3 = new Promise((resolve) => setTimeout(resolve, 100, 'foo'));
+
+Promise.all([promise1, promise2, promise3])
+    .then(values => {
+        console.log(values); // Output: [3, 42, "foo"]
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+// Example with a rejected promise
+const promise4 = Promise.resolve(3);
+const promise5 = Promise.reject('Error!');
+const promise6 = new Promise((resolve) => setTimeout(resolve, 100, 'bar'));
+
+Promise.all([promise4, promise5, promise6])
+    .then(values => {
+        console.log(values); // This won't be called
+    })
+    .catch(error => {
+        console.log(error); // Output: "Error!"
+    });
+```
+
+**Example Explanation:**
+
+- **First Example**:
+  - `promise1` resolves with `3`.
+  - `promise2` is a non-promise value (`42`), automatically converted to a resolved promise.
+  - `promise3` is a promise that resolves with `'foo'` after 100 milliseconds.
+  - `Promise.all` resolves after all promises have resolved, returning `[3, 42, "foo"]`.
+
+- **Second Example**:
+  - `promise5` rejects with `'Error!'`.
+  - As soon as `promise5` rejects, `Promise.all` immediately rejects, so the catch block outputs `"Error!"`. The other promises' results are ignored.
+
+This example demonstrates how the polyfill works with both resolved and rejected promises, illustrating its ability to handle mixed values and early rejections efficiently.
+
+#### 8. Polyfill for `Promise.race` 
+
+To create a polyfill for `Promise.race`, we need to implement a function that accepts an array of promises (or values) and returns a new promise that resolves or rejects as soon as any of the input promises resolve or reject.
+
+Here’s the optimal implementation:
+
+```javascript
+if (!Promise.race) {
+    Promise.race = function(promises) {
+        return new Promise((resolve, reject) => {
+            if (!Array.isArray(promises)) {
+                return reject(new TypeError('Promise.race accepts an array'));
+            }
+
+            for (let promise of promises) {
+                Promise.resolve(promise)
+                    .then(resolve)
+                    .catch(reject);
+            }
+        });
+    };
+}
+```
+
+**Explanation:**
+
+- **Handling Non-Promise Values**: The polyfill uses `Promise.resolve(promise)` to ensure that any non-promise value is treated as a resolved promise. This allows the function to handle arrays containing a mix of promises and regular values.
+
+- **First Resolution/Rejection**: The `Promise.race` polyfill will resolve or reject as soon as any of the promises in the array resolves or rejects. This is achieved by iterating over each promise and attaching `then` and `catch` handlers.
+
+- **Efficient Early Exit**: As soon as the first promise in the array resolves or rejects, the `resolve` or `reject` function is called, and the race is essentially "won." No further promises are processed.
+
+**Example Usage:**
+
+```javascript
+// Example with resolved promises
+const promise1 = new Promise((resolve) => setTimeout(resolve, 500, 'one'));
+const promise2 = new Promise((resolve) => setTimeout(resolve, 100, 'two'));
+
+Promise.race([promise1, promise2])
+    .then(value => {
+        console.log(value); // Output: "two"
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+// Example with a rejected promise
+const promise3 = new Promise((resolve) => setTimeout(resolve, 500, 'three'));
+const promise4 = new Promise((_, reject) => setTimeout(reject, 100, 'Error!'));
+
+Promise.race([promise3, promise4])
+    .then(value => {
+        console.log(value); // This won't be called
+    })
+    .catch(error => {
+        console.log(error); // Output: "Error!"
+    });
+```
+
+**Example Explanation:**
+
+- **First Example**:
+  - `promise1` resolves with `'one'` after 500 milliseconds.
+  - `promise2` resolves with `'two'` after 100 milliseconds.
+  - Since `promise2` resolves first, `Promise.race` resolves with `'two'`.
+
+- **Second Example**:
+  - `promise3` resolves with `'three'` after 500 milliseconds.
+  - `promise4` rejects with `'Error!'` after 100 milliseconds.
+  - Since `promise4` rejects first, `Promise.race` rejects with `'Error!'`.
+
+This example shows how the polyfill works by resolving or rejecting based on the first promise that completes, illustrating the essence of a "race" between promises. The implementation is optimized to handle both promise and non-promise values efficiently.
+
+
+## **Strict Mode Overview**
+
+**Strict mode** in JavaScript enforces a stricter set of rules, improving code quality by catching common errors and making the language more predictable. It’s activated with the `"use strict"` directive.
+
+### **Enabling Strict Mode**
+
+- **Globally**: Apply to the entire script.
+  ```javascript
+  "use strict";
+  // All code here is in strict mode
+  ```
+
+- **Function-Specific**: Apply to specific functions.
+  ```javascript
+  function myFunction() {
+    "use strict";
+    // Code here is in strict mode
+  }
+  ```
+
+### **Key Features**
+
+1. **Prevents Silent Errors**
+   - **Undeclared Variables**: Throws an error if you assign to undeclared variables.
+     ```javascript
+     "use strict";
+     x = 10; // ReferenceError: x is not defined
+     ```
+
+2. **Disallows Unsafe Actions**
+   - **`with` Statement**: Not allowed, prevents scope confusion.
+     ```javascript
+     "use strict";
+     with (obj) { x = 10; } // SyntaxError: 'with' statements are not allowed
+     ```
+
+3. **Eliminates Duplicate Parameters**
+   - **Function Parameters**: Duplicate names in function parameters are not allowed.
+     ```javascript
+     "use strict";
+     function myFunction(a, a) { // SyntaxError: Duplicate parameter name
+       // Code here
+     }
+     ```
+
+4. **Secures the `this` Context**
+   - **Unbound `this`**: In functions, `this` is `undefined` if not bound.
+     ```javascript
+     "use strict";
+     function showThis() {
+       console.log(this); // undefined
+     }
+     showThis();
+     ```
+
+5. **Prevents `eval` and `arguments` Abuse**
+   - **Restricted Keywords**: `eval` and `arguments` cannot be used as variable names.
+     ```javascript
+     "use strict";
+     var eval = 5; // SyntaxError: 'eval' cannot be used as a variable
+     ```
+
+### **Benefits**
+
+- **Error Detection**: Identifies common coding mistakes early.
+- **Performance**: Allows for better engine optimizations.
+- **Security**: Avoids certain security pitfalls and unsafe actions.
+
+### **When to Use**
+
+- **Always for New Code**: Start new projects with strict mode enabled.
+- **For Existing Code**: Consider adding strict mode to legacy code to uncover hidden bugs and enforce better practices.
+
+By adhering to strict mode, you enforce cleaner, more predictable JavaScript, reducing bugs and improving performance.
+
+## Web Storage API
+
+### **1. `localStorage`**
+
+- **Purpose**: Stores data with no expiration. Data persists even after closing the browser.
+- **Capacity**: ~5MB per origin.
+- **Scope**: Available across all tabs and windows from the same origin.
+
+**Usage**:
+```javascript
+// Set item
+localStorage.setItem('key', 'value');
+
+// Get item
+const value = localStorage.getItem('key');
+
+// Remove item
+localStorage.removeItem('key');
+
+// Clear all data
+localStorage.clear();
+```
+
+**Example**:
+```javascript
+localStorage.setItem('theme', 'dark');
+const theme = localStorage.getItem('theme'); // 'dark'
+localStorage.removeItem('theme');
+```
+
+### **2. `sessionStorage`**
+
+- **Purpose**: Stores data for the duration of the page session. Data is cleared when the tab is closed.
+- **Capacity**: ~5MB per origin.
+- **Scope**: Limited to the current tab. Not shared between tabs.
+
+**Usage**:
+```javascript
+// Set item
+sessionStorage.setItem('key', 'value');
+
+// Get item
+const value = sessionStorage.getItem('key');
+
+// Remove item
+sessionStorage.removeItem('key');
+
+// Clear all data
+sessionStorage.clear();
+```
+
+**Example**:
+```javascript
+sessionStorage.setItem('sessionId', 'abc123');
+const sessionId = sessionStorage.getItem('sessionId'); // 'abc123'
+sessionStorage.removeItem('sessionId');
+```
+
+### **3. Cookies**
+
+- **Purpose**: Stores small amounts of data with an optional expiration date. Sent with every HTTP request.
+- **Capacity**: ~4KB per cookie.
+- **Scope**: Accessible within the specified domain and path.
+
+**Usage**:
+```javascript
+// Set cookie
+document.cookie = "key=value; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+
+// Get cookie
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+// Remove cookie
+document.cookie = "key=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+```
+
+**Example**:
+```javascript
+document.cookie = "username=JohnDoe; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+const username = getCookie('username'); // 'JohnDoe'
+document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+```
+
+### **When to Use**
+
+- **`localStorage`**: For persistent data that should survive browser sessions.
+- **`sessionStorage`**: For temporary data that should only last as long as the tab is open.
+- **Cookies**: For small data that needs to be sent to the server with each request or has specific expiration requirements.
+
+Choose based on data longevity, scope, and whether the data needs to be sent with HTTP requests.
+
+
+## **TypeScript Interview Questions**
+
+### 1. **What is TypeScript? How is it different from JavaScript?**
+   - **TypeScript** is a statically-typed superset of JavaScript, meaning it adds optional types, interfaces, and other features that help prevent bugs at compile time. TypeScript compiles down to JavaScript, so any valid JavaScript is valid TypeScript.
+
+   ```ts
+   // TypeScript Example:
+   let message: string = "Hello, TypeScript!";
+   ```
+
+   - **Difference**: JavaScript does not have type-checking, while TypeScript enforces types at compile-time, providing better tooling and reducing runtime errors.
+
+---
+
+### 2. **What are the advantages of TypeScript?**
+   - **Static Typing**: Errors are caught during development, improving code reliability.
+   - **Better Tooling**: Enhanced IntelliSense in IDEs.
+   - **ES6+ Features**: Supports modern JavaScript features, which can be compiled to older versions.
+   - **Maintainability**: Large projects are easier to maintain with strict typing.
+
+   ```ts
+   // Example: Static typing preventing a bug
+   let age: number = 30;
+   age = "thirty"; // Error: Type '"thirty"' is not assignable to type 'number'.
+   ```
+
+---
+
+### 3. **What are Type Annotations and Type Inference?**
+   - **Type Annotations**: Explicitly declare the type of variables, function parameters, and return types.
+   - **Type Inference**: TypeScript automatically infers types based on the value assigned to a variable.
+
+   ```ts
+   // Type Annotation
+   let count: number = 5;
+
+   // Type Inference
+   let isActive = true; // inferred as boolean
+   ```
+
+---
+
+### 4. **What are Union Types in TypeScript?**
+   - **Union Types** allow a variable to hold more than one type.
+   
+   ```ts
+   let value: string | number;
+   value = "Hello"; // Valid
+   value = 42;      // Valid
+   ```
+
+   This helps provide flexibility in typing but still allows for strict checks.
+
+---
+
+### 5. **What are interfaces, and how do you use them?**
+   - **Interfaces** define the shape of an object or the contract for a class. They help in enforcing structure on data and ensuring consistency.
+
+   ```ts
+   interface User {
+     name: string;
+     age: number;
+     isAdmin?: boolean; // Optional property
+   }
+
+   let user1: User = {
+     name: "Alice",
+     age: 25
+   };
+   ```
+
+---
+
+
+### 6. **What are Generics in TypeScript?**
+   - **Generics** enable us to write functions, classes, and interfaces that can work with multiple types while maintaining type safety.
+
+   ```ts
+   function identity<T>(arg: T): T {
+     return arg;
+   }
+
+   let str = identity<string>("Hello");
+   let num = identity<number>(123);
+   ```
+
+   This allows us to reuse functions for different data types while preserving type safety.
+
+---
+
+### 7. **Explain Type Assertions in TypeScript.**
+   - **Type Assertions** allow us to tell the compiler that we know more about the type of a value than it does. It’s like "casting" in other languages.
+
+   ```ts
+   let someValue: any = "This is a string";
+   let strLength: number = (someValue as string).length;
+   ```
+
+   This is used when dealing with `any` types, or when you know the type from the context but TypeScript can't infer it.
+
+---
+
+### 8. **What is `unknown` and how is it different from `any`?**
+   - **`unknown`** is a type-safe counterpart to `any`. While `any` disables type checking, `unknown` forces you to perform type checks before using the value.
+
+   ```ts
+   let value: unknown;
+   value = "Hello";
+   value = 42;
+
+   if (typeof value === "string") {
+     console.log(value.toUpperCase()); // Safe, because we checked the type
+   }
+   ```
+
+   Using `unknown` promotes safer coding by enforcing type checks.
+
+---
+
+### 9. **How does TypeScript handle `this`?**
+   - TypeScript uses the `this` keyword like JavaScript, but with added type-checking to ensure `this` is used correctly in methods.
+
+   ```ts
+   class Person {
+     name: string;
+     constructor(name: string) {
+       this.name = name;
+     }
+     greet() {
+       return `Hello, ${this.name}`;
+     }
+   }
+
+   const person = new Person("John");
+   console.log(person.greet()); // "Hello, John"
+   ```
+
+   Incorrect use of `this` will result in compile-time errors, unlike in JavaScript.
+
+---
+
+### 10. **What are Type Guards?**
+   - **Type Guards** help TypeScript infer types in conditional blocks. TypeScript understands the types of variables within blocks when using guards like `typeof`, `instanceof`, and custom guards.
+
+   ```ts
+   function isNumber(x: any): x is number {
+     return typeof x === "number";
+   }
+
+   function double(x: number | string) {
+     if (isNumber(x)) {
+       return x * 2; // Here, TypeScript knows `x` is a number
+     }
+     return x;
+   }
+   ```
+
+---
+
+
+### 11. **What are Mapped Types in TypeScript?**
+   - **Mapped Types** allow you to create new types by transforming existing ones. It’s useful for creating variations of an interface or type.
+
+   ```ts
+   interface User {
+     name: string;
+     age: number;
+   }
+
+   type ReadonlyUser = {
+     readonly [P in keyof User]: User[P];
+   };
+   ```
+
+   This creates a type where all properties are `readonly`.
+
+---
+
+### 12. **What is the `never` type, and where is it used?**
+   - The `never` type represents values that never occur. It's often used for functions that throw exceptions or have infinite loops.
+
+   ```ts
+   function throwError(message: string): never {
+     throw new Error(message);
+   }
+   ```
+
+   Any function that doesn't return (throws an error or infinite loop) has a return type of `never`.
+
+---
+
+### 13. **How do you create and use decorators in TypeScript?**
+   - **Decorators** are a feature in TypeScript that allows you to modify classes, methods, and properties using annotations. They are frequently used in frameworks like Angular.
+
+   ```ts
+   function log(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+     const method = descriptor.value;
+     descriptor.value = function (...args: any[]) {
+       console.log(`Calling ${propertyName} with args: ${args}`);
+       return method.apply(this, args);
+     };
+   }
+
+   class MathOperations {
+     @log
+     add(a: number, b: number): number {
+       return a + b;
+     }
+   }
+
+   const math = new MathOperations();
+   math.add(2, 3); // Logs: "Calling add with args: 2,3"
+   ```
+
+   Decorators provide powerful ways to extend or modify class behavior.
+
+---
+
+### 14. **What are Conditional Types in TypeScript?**
+   - **Conditional Types** allow you to create types based on conditions, similar to how conditional logic works in JavaScript.
+
+   ```ts
+   type IsString<T> = T extends string ? true : false;
+
+   type Test1 = IsString<string>; // true
+   type Test2 = IsString<number>; // false
+   ```
+
+   These can be used for complex type manipulations in TypeScript.
+
+---
+
+### 15. **What are Utility Types in TypeScript?**
+   - TypeScript provides several **utility types** to manipulate and transform types. Examples include `Partial`, `Pick`, `Omit`, `Readonly`, etc.
+
+   ```ts
+   interface User {
+     name: string;
+     age: number;
+   }
+
+   // Partial makes all properties optional
+   let partialUser: Partial<User> = {
+     name: "John"
+   };
+   ```
+
+   Utility types simplify common type transformations, making the code more expressive and reducing boilerplate.
+
+---
+
+### **Conclusion**
+
+The depth of TypeScript questions increases as you progress from junior to senior levels, covering topics like basic type annotations to advanced concepts like decorators, generics, and conditional types. Make sure you have practical examples and a solid understanding of these concepts to ace your interview.

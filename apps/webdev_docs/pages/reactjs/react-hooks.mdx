@@ -1,0 +1,548 @@
+### <p  id="animated-text" className='text-center'> ReactJs Hooks </p>
+
+### What are React Hooks
+
+React hooks are functions that enable functional components to manage state and side effects. They were introduced in React 16.8 and have since become a fundamental part of building React applications. Let's explore the most commonly used React hooks with detailed examples.
+
+#### Feature of React Hooks
+
+**Reusability**:
+Hooks make it easier to reuse stateful logic between components. Developers can create custom hooks that encapsulate and abstract complex logic, which can then be shared across different components. This promotes code reuse and helps reduce redundancy.
+
+**Cleaner and more readable code**:
+Functional components are generally easier to read and write compared to class components. Hooks simplify the structure of the component and make it easier to understand and maintain.
+
+**Simplified state management**:
+With Hooks like `useState`, managing component state becomes more intuitive and concise. There's no need to create a class and extend from `React.Component` to manage state, as was the case with class components.
+
+**Improved separation of concerns**:
+Hooks allow you to separate concerns within your components. For example, the `useState` hook deals with state management, the `useEffect` hook handles side effects, and so on. This makes it easier to reason about the purpose of each piece of code within a component.
+
+#### Type of React Hooks
+
+##### 1- `useState`
+
+The `useState` hook allows functional components to manage state. It returns a state variable and a function to update it. You can initialize the state with an initial value.
+
+**Example:**
+
+```jsx
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    setCount(count + 1);
+  };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+}
+```
+
+##### 2- `useEffect`
+
+The `useEffect` hook is used to introduce side effects into functional components. It accepts a function to run after rendering and can be configured to run when specific dependencies change.
+
+**Example:**
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function DataFetching() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('https://api.example.com/data')
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  }, []);
+
+  return (
+    <div>
+      <p>{data ? `Data: ${data}` : 'Loading data...'}</p>
+    </div>
+  );
+}
+```
+
+##### 3- `useContext`
+
+The `useContext` hook allows components to access context values without nesting. It retrieves the context value from the nearest `Context.Provider` in the component tree.
+
+**Example:**
+
+```jsx
+import React, { createContext, useContext } from 'react';
+
+// Create a context
+const MyContext = createContext();
+
+function ParentComponent() {
+  return (
+    <MyContext.Provider value="Hello from Context!">
+      <ChildComponent />
+    </MyContext.Provider>
+  );
+}
+
+function ChildComponent() {
+  const contextValue = useContext(MyContext);
+  return <p>Context Value: {contextValue}</p>;
+}
+
+```
+
+##### 4- `useReducer`
+
+The `useReducer` hook is used to manage more complex state logic. It takes a reducer function and an initial state, returning the current state and a dispatch function to update it.
+
+**Example:**
+
+```jsx
+import React, { useReducer } from 'react';
+
+const initialState = { count: 0 };
+
+function counterReducer(state, action) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { count: state.count + 1 };
+    default:
+      return state;
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(counterReducer, initialState);
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: 'INCREMENT' })}>Increment</button>
+    </div>
+  );
+}
+```
+
+##### 5- `useRef`
+
+The `useRef` hook creates mutable references that can be used to access DOM elements or persist values between renders.
+
+**Example:**
+
+```jsx
+import React, { useRef, useEffect } from 'react';
+
+function FocusInput() {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  return <input ref={inputRef} />;
+}
+```
+
+##### 6- `useMemo`
+
+The `useMemo` hook memoizes the result of a function, recalculating only when its inputs (dependencies) change. This can improve performance in some cases.
+
+**Example:**
+
+```jsx
+import React, { useMemo } from 'react';
+
+function ExpensiveCalculation({ a, b }) {
+  const result = useMemo(() => {
+    // Expensive calculation based on a and b
+    return a * b;
+  }, [a, b]);
+
+  return <div>Result: {result}</div>;
+}
+```
+
+##### 7- `useCallback`
+
+The `useCallback` hook memoizes callback functions, helping prevent unnecessary re-renders of child components when passed as props.
+
+**Example:**
+
+```jsx
+import React, { useState, useCallback } from 'react';
+
+function ParentComponent() {
+  const [count, setCount] = useState(0);
+
+  const increment = useCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <ChildComponent increment={increment} />
+    </div>
+  );
+}
+```
+
+##### 8- `useLayoutEffect`
+
+The `useLayoutEffect` hook is similar to `useEffect`, but it runs synchronously after all DOM mutations. It's used for tasks that need to be completed before the browser repaints.
+
+**Example:**
+
+```jsx
+import React, { useLayoutEffect } from 'react';
+
+function MeasureElement() {
+  useLayoutEffect(() => {
+    // Measure the element's dimensions or perform layout-related tasks
+  }, []);
+
+  return <div>Element to be measured</div>;
+}
+```
+
+##### 9- `useImperativeHandle`
+
+The `useImperativeHandle` hook allows you to customize the instance value that is exposed when using `React.forwardRef`. It's useful for hiding or renaming methods on the ref object.
+
+**Example:**
+
+
+
+```jsx
+import React, { useImperativeHandle, forwardRef } from 'react';
+
+const MyComponent = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    customMethod() {
+      // Custom method implementation
+    },
+  }));
+
+  return <div>Your component content</div>;
+});
+```
+
+These React hooks provide a powerful and flexible way to manage state and side effects in functional components. By using these hooks effectively, you can build robust and maintainable React applications with ease.
+
+
+### Custom Hooks in React 
+
+Custom hooks in React allow you to encapsulate and reuse logic across components, improving code reusability and maintainability. In this guide, we'll create a simple yet powerful custom hook for data fetching.
+
+#### What Are Custom Hooks?
+
+Custom hooks are functions that use React hooks to share reusable logic across components. They start with `use` and can leverage built-in hooks like `useState` and `useEffect`.
+
+#### Why Use Custom Hooks?
+
+- **Reusability**: Share logic easily across components.
+- **Abstraction**: Keep component code clean and focused on UI.
+- **Maintainability**: Isolate and test complex logic separately.
+
+**Example: `useDataFetch` Custom Hook**
+
+We'll create a `useDataFetch` hook that fetches data from an API, manages loading and error states, and caches results.
+
+**Step 1: Hook Implementation**
+
+```jsx
+import { useState, useEffect } from 'react';
+
+const cache = new Map();
+
+function useDataFetch(url) {
+  const [data, setData] = useState(cache.get(url) || null);
+  const [loading, setLoading] = useState(!cache.has(url));
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (cache.has(url)) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const result = await response.json();
+        cache.set(url, result);
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+export default useDataFetch;
+```
+
+**Key Points**
+
+- **Caching**: Reduces unnecessary API calls.
+- **State Management**: Manages `data`, `loading`, and `error` states.
+- **Effect Hook**: Handles side effects like data fetching.
+
+**Using `useDataFetch` in a Component**
+
+```jsx
+import React from 'react';
+import useDataFetch from './useDataFetch';
+
+function ProductList() {
+  const { data, loading, error } = useDataFetch('/api/products');
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <ul>
+      {data.map(product => (
+        <li key={product.id}>{product.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default ProductList;
+```
+
+**Benefits and Best Practices**
+
+1. **Simplified Components**: Focus on UI, not logic.
+2. **Consistency**: Reuse logic across the app.
+3. **Isolation**: Test and maintain hooks independently.
+
+#### Conclusion
+
+Custom hooks like `useDataFetch` streamline your React applications by abstracting reusable logic. They enhance reusability, maintainability, and code clarity. Start leveraging custom hooks in your projects to make your codebase more efficient and manageable.
+
+### Rules for Using Hooks in React 
+these are following best practice steps-
+1. **Call Hooks Only at the Top Level**
+
+Always call hooks at the top level of your React function. This means not using hooks inside loops, conditions, or nested functions. This ensures that hooks are called in the same order on every render, preserving state consistency.
+
+**Example:**
+```jsx
+// ❌ Incorrect: Inside a condition
+if (condition) {
+  const [state, setState] = useState(0);
+}
+
+// ✅ Correct: Top level
+const [state, setState] = useState(0);
+if (condition) {
+  // Use state here
+}
+```
+
+2. **Call Hooks Only in React Functions**
+
+Hooks can only be used in:
+
+- **Function components**: Custom or built-in React components defined as functions.
+- **Custom hooks**: Functions that start with "use" and utilize other hooks.
+
+Avoid using hooks in non-React contexts like regular functions or event handlers.
+
+**Example:**
+```jsx
+// ❌ Incorrect: Non-React function
+function notAComponent() {
+  const [count, setCount] = useState(0);
+}
+
+// ✅ Correct: React component
+function MyComponent() {
+  const [count, setCount] = useState(0);
+  return <div>{count}</div>;
+}
+```
+3. **Follow Dependency Rules in Hooks**
+
+When using hooks like `useEffect`, `useCallback`, and `useMemo`, always include all dependencies in the dependency array to ensure correct updates.
+
+**Example:**
+```jsx
+// ✅ Correct: All dependencies listed
+useEffect(() => {
+  console.log('Prop changed:', prop);
+}, [prop]);
+```
+4. **Use the `use` Prefix for Custom Hooks**
+
+Name your custom hooks with the `use` prefix (e.g., `useCustomHook`) to indicate that they follow the rules of hooks.
+
+**Example:**
+```jsx
+function useCustomHook() {
+  const [value, setValue] = useState(0);
+  // Custom logic here
+  return [value, setValue];
+}
+```
+
+**Summary**
+
+Following these rules ensures that your React hooks behave predictably, maintain state consistency, and integrate seamlessly into your application. For automated enforcement of these rules, consider using the [ESLint plugin for React hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks).
+
+###  `useMemo` vs. `useCallback` 
+
+React hooks `useMemo` and `useCallback` are used for performance optimization by memoizing values and functions. Here's a concise comparison with examples to illustrate their uses.
+
+#### `useMemo`
+
+**Purpose**: Memoize the result of a computation to avoid unnecessary recalculations.
+
+**When to Use**: Use `useMemo` for expensive calculations that should only be recalculated when specific dependencies change.
+
+ **Example Without `useMemo`**
+
+```jsx
+import React, { useState } from 'react';
+
+function ExpensiveComponent({ num }) {
+  const calculateFactorial = (n) => {
+    if (n <= 1) return 1;
+    return n * calculateFactorial(n - 1);
+  };
+
+  const factorial = calculateFactorial(num); // Recalculates on every render
+
+  return <div>Factorial of {num} is {factorial}</div>;
+}
+
+function App() {
+  const [number, setNumber] = useState(5);
+
+  return (
+    <div>
+      <ExpensiveComponent num={number} />
+      <button onClick={() => setNumber(number + 1)}>Increment</button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+**Issue**: `calculateFactorial` is recalculated every time the component re-renders, which can be inefficient.
+
+**Example With `useMemo`**
+
+```jsx
+import React, { useMemo, useState } from 'react';
+
+function ExpensiveComponent({ num }) {
+  const calculateFactorial = (n) => {
+    if (n <= 1) return 1;
+    return n * calculateFactorial(n - 1);
+  };
+
+  const factorial = useMemo(() => calculateFactorial(num), [num]);
+
+  return <div>Factorial of {num} is {factorial}</div>;
+}
+
+function App() {
+  const [number, setNumber] = useState(5);
+
+  return (
+    <div>
+      <ExpensiveComponent num={number} />
+      <button onClick={() => setNumber(number + 1)}>Increment</button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+**Benefit**: `useMemo` prevents `calculateFactorial` from being recalculated unless `num` changes, enhancing performance.
+
+#### `useCallback`
+
+**Purpose**: Memoize a function to avoid unnecessary re-creations.
+
+**When to Use**: Use `useCallback` when passing functions to child components or when the function is used in dependency arrays.
+
+**Example Without `useCallback`**
+
+```jsx
+import React, { useState } from 'react';
+
+function ChildComponent({ onClick }) {
+  console.log('Child rendered');
+  return <button onClick={onClick}>Click me</button>;
+}
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = () => setCount(count + 1); // Recreated on every render
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <ChildComponent onClick={handleClick} />
+    </div>
+  );
+}
+
+export default App;
+```
+
+**Issue**: `handleClick` is recreated on every render, causing `ChildComponent` to re-render unnecessarily.
+
+**Example With `useCallback`**
+
+```jsx
+import React, { useCallback, useState } from 'react';
+
+function ChildComponent({ onClick }) {
+  console.log('Child rendered');
+  return <button onClick={onClick}>Click me</button>;
+}
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => setCount(count + 1), [count]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <ChildComponent onClick={handleClick} />
+    </div>
+  );
+}
+
+export default App;
+```
+
+**Benefit**: `useCallback` ensures `handleClick` is only recreated when `count` changes, reducing unnecessary re-renders of `ChildComponent`.
+
+#### Summary
+
+- **`useMemo`**: Memoizes values from expensive calculations. Use it to optimize performance by avoiding redundant calculations.
+- **`useCallback`**: Memoizes functions to prevent unnecessary re-creations. Use it to prevent unnecessary re-renders of child components and optimize function handling.
+
+By using `useMemo` and `useCallback` judiciously, you can make your React applications more efficient and responsive.

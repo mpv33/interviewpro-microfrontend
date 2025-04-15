@@ -1,0 +1,23 @@
+{
+  "index": {
+    "title": "Getting started"
+  },
+  "javascript": {
+    "title": "JavaScript",
+    "defaultOpen": true
+  },
+  "reactjs": {
+    "title": "ReactJS",
+    "defaultOpen": false
+  },
+  "nextjs": {
+    "title": "NextJs",
+    "defaultOpen": false
+  },
+  "release":{
+     "display":"hidden",
+     "theme": {
+      "navbar": false 
+    }
+  }
+}

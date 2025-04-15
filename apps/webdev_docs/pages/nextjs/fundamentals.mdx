@@ -1,0 +1,209 @@
+### Next.js Fundamentals
+
+In this section, we'll cover key concepts that are essential for understanding how Next.js works. These topics are the foundation for using Next.js effectively in real-world projects.
+
+---
+
+#### **What is Next.js?**
+
+Next.js is a React framework built on top of Node.js, designed to offer features like server-side rendering (SSR), static site generation (SSG), and more, enabling developers to create fast, scalable, and SEO-friendly web applications. 
+
+It simplifies tasks like:
+- **File-based routing**: Automatically maps files in the `pages` directory to routes.
+- **SSR & SSG**: Easily supports both server-rendered and statically generated pages.
+- **API Routes**: Allows you to create API endpoints without a separate backend.
+- **Automatic code-splitting**: Optimizes performance by loading only the necessary JavaScript.
+
+**Example:**
+In a React app, SSR and SSG would typically require a lot of setup. In Next.js, these features are built-in and easy to use, helping you focus more on building the application rather than handling configurations.
+
+---
+
+#### **Pages and Routing**
+
+Next.js uses a file-based routing system. Pages are created by adding files to the `pages` folder. Each file represents a route based on its filename.
+
+- **Example 1: Basic Routing**
+
+  If you create a file `about.js` in the `pages` folder, it automatically becomes accessible at `/about`.
+
+  ```jsx
+  // pages/about.js
+  export default function About() {
+    return <h1>About Page</h1>;
+  }
+  ```
+
+  Accessing `http://localhost:3000/about` will render this component.
+
+- **Example 2: Dynamic Routing**
+
+  For dynamic routes, you can use square brackets in the filename. For example, `[id].js` allows you to create a dynamic route.
+
+  ```jsx
+  // pages/product/[id].js
+  import { useRouter } from 'next/router';
+
+  export default function Product() {
+    const router = useRouter();
+    const { id } = router.query;
+
+    return <h1>Product ID: {id}</h1>;
+  }
+  ```
+
+  Accessing `/product/123` will display "Product ID: 123".
+
+---
+
+#### **SSR (Server-Side Rendering)**
+
+Server-side rendering (SSR) means that pages are rendered on the server and sent as fully rendered HTML to the client. This improves SEO and performance for dynamic content.
+
+In Next.js, SSR is implemented using the `getServerSideProps` function. It fetches data on each request and passes it to the page component as props.
+
+**Example: SSR with `getServerSideProps`**
+
+```jsx
+// pages/user/[id].js
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+  const res = await fetch(`https://api.example.com/users/${id}`);
+  const data = await res.json();
+
+  return {
+    props: { user: data },
+  };
+}
+
+export default function UserPage({ user }) {
+  return (
+    <div>
+      <h1>User Name: {user.name}</h1>
+      <p>Email: {user.email}</p>
+    </div>
+  );
+}
+```
+
+- Here, `getServerSideProps` fetches the user data based on the dynamic `id` and renders it on the server before sending it to the client.
+
+---
+
+#### **SSG (Static Site Generation)**
+
+Static Site Generation (SSG) allows pages to be pre-rendered at build time, making the site fast and scalable. Unlike SSR, SSG pages are generated once and reused across requests, which makes it suitable for static content.
+
+In Next.js, SSG is implemented using `getStaticProps`.
+
+**Example: SSG with `getStaticProps`**
+
+```jsx
+// pages/posts.js
+export async function getStaticProps() {
+  const res = await fetch('https://api.example.com/posts');
+  const posts = await res.json();
+
+  return {
+    props: { posts },
+  };
+}
+
+export default function PostsPage({ posts }) {
+  return (
+    <div>
+      <h1>Blog Posts</h1>
+      {posts.map(post => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+- Here, `getStaticProps` fetches the data at build time and the page is generated once, meaning subsequent requests serve the pre-rendered HTML.
+
+---
+
+#### **CSR (Client-Side Rendering)**
+
+Client-Side Rendering (CSR) means the page is rendered entirely on the client side using JavaScript. This is the standard rendering method for React applications. In Next.js, you typically use `useEffect` for client-side rendering when data doesn't need to be fetched on the server.
+
+**Example: CSR with `useEffect`**
+
+```jsx
+// pages/dashboard.js
+import { useState, useEffect } from 'react';
+
+export default function Dashboard() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/dashboard')
+      .then(res => res.json())
+      .then(data => setData(data));
+  }, []);
+
+  if (!data) return <p>Loading...</p>;
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Visitors: {data.visitors}</p>
+    </div>
+  );
+}
+```
+
+- The data is fetched in the browser using `useEffect`, making the page dynamic, but all rendering happens on the client.
+
+---
+
+#### **Next.js vs Create React App (CRA)**
+
+Next.js and Create React App (CRA) both use React, but they serve different purposes and offer different features.
+
+| Feature                 | Next.js                                      | CRA                                          |
+|-------------------------|----------------------------------------------|----------------------------------------------|
+| **SSR & SSG**            | Built-in support for SSR and SSG             | No built-in SSR/SSG, client-side only        |
+| **File-based Routing**   | Automatic routing based on `pages` folder    | Manual routing using `react-router`          |
+| **API Routes**           | Can create API routes within the app         | Requires a separate backend server           |
+| **Performance**          | Code splitting, SSR, and SSG for better perf | CSR, no server-side rendering                |
+| **SEO**                  | Better SEO with SSR/SSG                     | Requires external solutions for SSR/SEO      |
+
+**Use Cases**:
+- **Next.js**: Suitable for SEO-sensitive sites, blogs, e-commerce, and dynamic applications.
+- **CRA**: Best for Single Page Applications (SPAs) where SEO is not a priority.
+
+---
+
+#### **Link Component**
+
+In Next.js, the `Link` component is used to perform client-side navigation between pages without full page reloads. This improves performance by avoiding unnecessary requests to the server.
+
+**Example: Using `Link` for Client-Side Navigation**
+
+```jsx
+import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <Link href="/about">
+        <a>Go to About Page</a>
+      </Link>
+    </div>
+  );
+}
+```
+
+- Clicking the "Go to About Page" link will navigate to the `/about` route without refreshing the page, ensuring smooth transitions.
+
+---
+
+### Summary:
+Next.js fundamentals include understanding the different rendering methods (SSR, SSG, CSR), routing, and performance optimizations that make it stand out from traditional React applications. These concepts allow developers to build scalable and high-performance web applications with minimal configuration.

@@ -1,0 +1,289 @@
+## Coding challenges
+
+
+### **1. Blog with SSG**
+
+**Objective**: Build a static blog where blog pages are pre-rendered using `getStaticProps` and `getStaticPaths`.
+
+**Steps**:
+
+1. **Create a Blog Post Page**: Use file-based routing to create a dynamic blog post page.
+
+   **File: `pages/posts/[id].js`**
+   ```jsx
+   import { useRouter } from 'next/router';
+   import { getPostData, getAllPostIds } from '../../lib/posts';
+
+   export default function Post({ postData }) {
+     const router = useRouter();
+
+     // Show a loader if the page is being built
+     if (router.isFallback) {
+       return <div>Loading...</div>;
+     }
+
+     return (
+       <article>
+         <h1>{postData.title}</h1>
+         <div>{postData.content}</div>
+       </article>
+     );
+   }
+
+   // Fetch data for a specific post
+   export async function getStaticProps({ params }) {
+     const postData = await getPostData(params.id);
+     return {
+       props: {
+         postData,
+       },
+     };
+   }
+
+   // Generate paths for all blog posts
+   export async function getStaticPaths() {
+     const paths = await getAllPostIds();
+     return {
+       paths,
+       fallback: true,
+     };
+   }
+   ```
+
+2. **Data Fetching Functions**: Implement functions to fetch post data and paths.
+
+   **File: `lib/posts.js`**
+   ```js
+   import fs from 'fs';
+   import path from 'path';
+   import matter from 'gray-matter';
+
+   const postsDirectory = path.join(process.cwd(), 'posts');
+
+   export function getAllPostIds() {
+     const fileNames = fs.readdirSync(postsDirectory);
+     return fileNames.map(fileName => ({
+       params: {
+         id: fileName.replace(/\.md$/, ''),
+       },
+     }));
+   }
+
+   export async function getPostData(id) {
+     const fullPath = path.join(postsDirectory, `${id}.md`);
+     const fileContents = fs.readFileSync(fullPath, 'utf8');
+     const { data, content } = matter(fileContents);
+     return {
+       id,
+       ...data,
+       content,
+     };
+   }
+   ```
+
+---
+
+### **2. Authentication with NextAuth**
+
+**Objective**: Implement social login with providers like GitHub, Google, or Facebook using NextAuth.js.
+
+**Steps**:
+
+1. **Install NextAuth.js**: Add the package to your Next.js project.
+
+   ```bash
+   npm install next-auth
+   ```
+
+2. **Configure NextAuth.js**: Set up authentication providers.
+
+   **File: `pages/api/auth/[...nextauth].js`**
+   ```js
+   import NextAuth from 'next-auth';
+   import GitHubProvider from 'next-auth/providers/github';
+   import GoogleProvider from 'next-auth/providers/google';
+
+   export default NextAuth({
+     providers: [
+       GitHubProvider({
+         clientId: process.env.GITHUB_ID,
+         clientSecret: process.env.GITHUB_SECRET,
+       }),
+       GoogleProvider({
+         clientId: process.env.GOOGLE_ID,
+         clientSecret: process.env.GOOGLE_SECRET,
+       }),
+     ],
+     pages: {
+       signIn: '/auth/signin',
+     },
+   });
+   ```
+
+3. **Add Environment Variables**: Configure environment variables in `.env.local`.
+
+   ```env
+   GITHUB_ID=your-github-client-id
+   GITHUB_SECRET=your-github-client-secret
+   GOOGLE_ID=your-google-client-id
+   GOOGLE_SECRET=your-google-client-secret
+   ```
+
+4. **Create Sign-In Page**: Implement the sign-in UI.
+
+   **File: `pages/auth/signin.js`**
+   ```jsx
+   import { signIn } from 'next-auth/react';
+
+   export default function SignIn() {
+     return (
+       <div>
+         <h1>Sign In</h1>
+         <button onClick={() => signIn('github')}>Sign in with GitHub</button>
+         <button onClick={() => signIn('google')}>Sign in with Google</button>
+       </div>
+     );
+   }
+   ```
+
+---
+
+### **3. API Route with Dynamic Params**
+
+**Objective**: Create an API route that handles dynamic parameters to fetch user-specific data.
+
+**Steps**:
+
+1. **Create the API Route**: Use dynamic file names to handle dynamic parameters.
+
+   **File: `pages/api/users/[id].js`**
+   ```js
+   export default async function handler(req, res) {
+     const { id } = req.query;
+
+     // Fetch user data from a database or another source
+     const user = await getUserData(id);
+
+     if (user) {
+       res.status(200).json(user);
+     } else {
+       res.status(404).json({ message: 'User not found' });
+     }
+   }
+
+   async function getUserData(id) {
+     // Replace with actual data fetching logic
+     return { id, name: 'User Name' };
+   }
+   ```
+
+2. **Test the API Route**: Ensure the API correctly handles requests with different IDs.
+
+   ```bash
+   curl http://localhost:3000/api/users/123
+   ```
+
+---
+
+### **4. SSR E-commerce Product Page**
+
+**Objective**: Build an e-commerce product page that uses `getServerSideProps` to fetch data dynamically.
+
+**Steps**:
+
+1. **Create the Product Page**: Fetch product data on each request.
+
+   **File: `pages/products/[id].js`**
+   ```jsx
+   import { useRouter } from 'next/router';
+
+   export default function Product({ product }) {
+     const router = useRouter();
+
+     // Show a loader if the page is being built
+     if (router.isFallback) {
+       return <div>Loading...</div>;
+     }
+
+     return (
+       <div>
+         <h1>{product.name}</h1>
+         <p>{product.description}</p>
+         <span>${product.price}</span>
+       </div>
+     );
+   }
+
+   // Fetch data for a product
+   export async function getServerSideProps({ params }) {
+     const product = await fetchProductData(params.id);
+     return {
+       props: {
+         product,
+       },
+     };
+   }
+
+   async function fetchProductData(id) {
+     // Replace with actual data fetching logic
+     return { id, name: 'Product Name', description: 'Product Description', price: 99.99 };
+   }
+   ```
+
+---
+
+### **5. ISR Real-Time Blog**
+
+**Objective**: Build a blog that uses Incremental Static Regeneration (ISR) to fetch and display updated content after deployment.
+
+**Steps**:
+
+1. **Configure ISR**: Set up ISR with `revalidate` in `getStaticProps`.
+
+   **File: `pages/blog/[id].js`**
+   ```jsx
+   import { useRouter } from 'next/router';
+   import { getPostData, getAllPostIds } from '../../lib/posts';
+
+   export default function Post({ postData }) {
+     const router = useRouter();
+
+     // Show a loader if the page is being built
+     if (router.isFallback) {
+       return <div>Loading...</div>;
+     }
+
+     return (
+       <article>
+         <h1>{postData.title}</h1>
+         <div>{postData.content}</div>
+       </article>
+     );
+   }
+
+   // Fetch data for a specific post
+   export async function getStaticProps({ params }) {
+     const postData = await getPostData(params.id);
+     return {
+       props: {
+         postData,
+       },
+       revalidate: 10, // Revalidate every 10 seconds
+     };
+   }
+
+   // Generate paths for all blog posts
+   export async function getStaticPaths() {
+     const paths = await getAllPostIds();
+     return {
+       paths,
+       fallback: 'blocking',
+     };
+   }
+   ```
+
+2. **Test ISR**: Verify that updates to the blog content appear after the revalidation interval.
+
+---
+
+These examples cover practical implementations of key Next.js concepts, providing a strong foundation for both understanding and applying Next.js features effectively in real-world scenarios.

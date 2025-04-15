@@ -1,0 +1,13 @@
+{
+  "index": "Getting Started",
+  "fundamentals": "Fundamentals",
+  "api-routes": "API Routes",
+  "ssg-ssr": "SSG and SSR",
+  "dynamic-routing": "Dynamic Routing",
+  "performance-optimization": "Performance Optimization",
+  "deployment": "Deployment",
+  "advanced-nextjs": "Advanced NextJs",
+  "testing":"Testing",
+  "seo":"SEO",
+  "coding-challenges": "Coding Challenges"
+}

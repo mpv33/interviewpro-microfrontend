@@ -1,0 +1,476 @@
+
+
+### **1. Type Coercion and Conversion**
+
+#### **1.1. Type Coercion with `==`**
+
+**Question:**
+
+```javascript
+console.log([] == false);
+console.log([] == ![]);
+console.log([] == [] + []);
+console.log([] == [1] - [1]);
+```
+
+**Answer:**
+
+```
+true
+true
+true
+true
+```
+
+**Explanation:**
+
+- `[] == false`: An empty array is coerced to an empty string, which is coerced to `false` in comparisons.
+- `[] == ![]`: `![]` is `false`, so `[] == false` is `true`.
+- `[] == [] + []`: `[] + []` results in an empty string, so `[] == ""` is `true`.
+- `[] == [1] - [1]`: `[1] - [1]` results in `0` (as both arrays are coerced to numbers), so `[] == 0` is `true`.
+
+#### **1.2. String and Number Coercion**
+
+**Question:**
+
+```javascript
+console.log(1 + '1');
+console.log('1' - 1);
+console.log('1' + 1);
+console.log('1' - '1');
+```
+
+**Answer:**
+
+```
+11
+0
+11
+0
+```
+
+**Explanation:**
+
+- `1 + '1'`: The number `1` is coerced to a string, resulting in `'11'`.
+- `'1' - 1`: `'1'` is coerced to a number, resulting in `0`.
+- `'1' + 1`: The number `1` is coerced to a string, resulting in `'11'`.
+- `'1' - '1'`: Both are coerced to numbers, resulting in `0`.
+
+---
+
+### **2. Scope and Closures**
+
+#### **2.1. Function Scope and Hoisting**
+
+**Question:**
+
+```javascript
+console.log(a);
+console.log(foo());
+
+var a = 1;
+
+function foo() {
+  return 2;
+}
+
+var a = 3;
+```
+
+**Answer:**
+
+```
+undefined
+2
+```
+
+**Explanation:**
+
+- The function `foo` is hoisted and can be called before its definition.
+- Variable declarations are hoisted but not their assignments, so `a` is `undefined` before its assignment.
+
+#### **2.2. Closures Inside Loops**
+
+**Question:**
+
+```javascript
+function createFunctions() {
+  let functions = [];
+  for (var i = 0; i < 3; i++) {
+    functions.push(function() {
+      return i;
+    });
+  }
+  return functions;
+}
+
+const funcs = createFunctions();
+console.log(funcs[0]());
+console.log(funcs[1]());
+console.log(funcs[2]());
+```
+
+**Answer:**
+
+```
+3
+3
+3
+```
+
+**Explanation:**
+
+- All functions capture the same `i` variable, which ends up being `3` after the loop completes.
+
+#### **2.3. Closures with `let`**
+
+**Question:**
+
+```javascript
+function createFunctions() {
+  let functions = [];
+  for (let i = 0; i < 3; i++) {
+    functions.push(function() {
+      return i;
+    });
+  }
+  return functions;
+}
+
+const funcs = createFunctions();
+console.log(funcs[0]());
+console.log(funcs[1]());
+console.log(funcs[2]());
+```
+
+**Answer:**
+
+```
+0
+1
+2
+```
+
+**Explanation:**
+
+- `let` creates a new block scope for each iteration, so each function captures its own `i`.
+
+---
+
+### **3. `this` Keyword**
+
+#### **3.1. `this` in Object Methods**
+
+**Question:**
+
+```javascript
+const obj = {
+  name: 'Alice',
+  greet() {
+    return `Hello, ${this.name}`;
+  }
+};
+
+console.log(obj.greet());
+```
+
+**Answer:**
+
+```
+Hello, Alice
+```
+
+**Explanation:**
+
+- `this` refers to `obj` inside the `greet` method.
+
+#### **3.2. `this` in Nested Functions**
+
+**Question:**
+
+```javascript
+const obj = {
+  name: 'Alice',
+  greet() {
+    const inner = function() {
+      return `Hello, ${this.name}`;
+    };
+    return inner();
+  }
+};
+
+console.log(obj.greet());
+```
+
+**Answer:**
+
+```
+Hello, undefined
+```
+
+**Explanation:**
+
+- `this` inside the `inner` function refers to the global object or `undefined` in strict mode, not `obj`.
+
+#### **3.3. `this` with `bind`, `call`, and `apply`**
+
+**Question:**
+
+```javascript
+function greet(greeting) {
+  return `${greeting}, ${this.name}`;
+}
+
+const person = { name: 'Bob' };
+
+console.log(greet.call(person, 'Hello'));
+console.log(greet.apply(person, ['Hi']));
+```
+
+**Answer:**
+
+```
+Hello, Bob
+Hi, Bob
+```
+
+**Explanation:**
+
+- `call` and `apply` set `this` to `person` and pass arguments differently.
+
+---
+
+### **4. Object Manipulation**
+
+#### **4.1. Object Spread Operator**
+
+**Question:**
+
+```javascript
+const obj1 = { a: 1, b: 2 };
+const obj2 = { ...obj1, c: 3 };
+
+console.log(obj2);
+```
+
+**Answer:**
+
+```
+{ a: 1, b: 2, c: 3 }
+```
+
+**Explanation:**
+
+- The spread operator copies properties from `obj1` into `obj2`.
+
+#### **4.2. `Object.assign`**
+
+**Question:**
+
+```javascript
+const obj1 = { a: 1 };
+const obj2 = { b: 2 };
+
+const merged = Object.assign({}, obj1, obj2);
+console.log(merged);
+```
+
+**Answer:**
+
+```
+{ a: 1, b: 2 }
+```
+
+**Explanation:**
+
+- `Object.assign` copies properties from source objects into the target object.
+
+---
+
+### **5. Array Methods**
+
+#### **5.1. `map` and `filter`**
+
+**Question:**
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+const result = numbers
+  .map(x => x * 2)
+  .filter(x => x > 6);
+
+console.log(result);
+```
+
+**Answer:**
+
+```
+[8, 10]
+```
+
+**Explanation:**
+
+- `map` transforms elements, and `filter` removes elements based on the condition.
+
+#### **5.2. `reduce` Method**
+
+**Question:**
+
+```javascript
+const arr = [1, 2, 3, 4];
+
+const sum = arr.reduce((acc, curr) => acc + curr, 0);
+console.log(sum);
+```
+
+**Answer:**
+
+```
+10
+```
+
+**Explanation:**
+
+- `reduce` accumulates values in `acc` starting from `0`.
+
+---
+
+### **6. Special Cases**
+
+#### **6.1. `NaN` and `isNaN`**
+
+**Question:**
+
+```javascript
+console.log(NaN == NaN);
+console.log(isNaN(NaN));
+console.log(isNaN('string'));
+```
+
+**Answer:**
+
+```
+false
+true
+true
+```
+
+**Explanation:**
+
+- `NaN` is not equal to `NaN` (`NaN == NaN` is `false`).
+- `isNaN` checks if a value is `NaN` or can be coerced to `NaN`.
+
+#### **6.2. `typeof` Operator**
+
+**Question:**
+
+```javascript
+console.log(typeof NaN);
+console.log(typeof null);
+console.log(typeof function() {});
+console.log(typeof Symbol());
+```
+
+**Answer:**
+
+```
+number
+object
+function
+symbol
+```
+
+**Explanation:**
+
+- `typeof NaN` returns `'number'`.
+- `typeof null` returns `'object'` (historical bug in JavaScript).
+- `typeof function` returns `'function'`.
+- `typeof Symbol()` returns `'symbol'`.
+
+#### **6.3. `new` Keyword**
+
+**Question:**
+
+```javascript
+function Person(name) {
+  this.name = name;
+}
+
+const p = new Person('John');
+console.log(p.name);
+```
+
+**Answer:**
+
+```
+John
+```
+
+**Explanation:**
+
+- `new` creates a new instance of `Person` with the `name` property.
+
+---
+
+### **7. Asynchronous JavaScript**
+
+#### **7.1. `setTimeout` and `Promise`**
+
+**Question:**
+
+```javascript
+console.log('Start');
+
+setTimeout(() => console.log('Timeout'), 0);
+
+Promise.resolve()
+  .then(() => console.log('Promise 1'))
+  .then(() => console.log('Promise 2'));
+
+console.log('End');
+```
+
+**Answer:**
+
+```
+Start
+End
+Promise 1
+Promise 2
+Timeout
+```
+
+**Explanation:**
+
+- `console.log` statements are executed first.
+- Microtasks (promise callbacks) are processed before macrotasks (`setTimeout`).
+
+#### **7.2. Async/Await**
+
+**Question:**
+
+```javascript
+async function fetchData() {
+  return 'Data';
+}
+
+fetchData().then(console.log);
+
+console.log('End');
+```
+
+**Answer:**
+
+```
+End
+Data
+```
+
+**Explanation:**
+
+- The async function returns a promise that resolves to `'Data'`.
+
+---
+
+These questions cover a wide range of JavaScript concepts and tricky scenarios. If you have more specific topics or further details you’d like to explore, let me know!

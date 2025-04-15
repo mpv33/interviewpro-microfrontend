@@ -1,0 +1,14 @@
+{
+  "index":"Getting Started",
+  "fundamentals":"Fundamentals",
+  "functions":"Functions",
+  "objects-array":"Objects and Array",
+  "prototypes-inheritance":"Prototypes and Inheritance",
+  "asynchronous-js":"Asynchronous JavaScript",
+  "dom-events":"DOM and Events",
+  "performance-optimization":"Performance Optimization",
+  "advanced-javascript":"Advanced JavaScript",
+  "tricky-js-output":"Tricky Js output",
+  "coding-challenges": "Coding Challenges"
+ 
+}
