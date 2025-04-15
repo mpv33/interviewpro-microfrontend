@@ -40,8 +40,8 @@ const Navbar: React.FC = () => {
       <div className="flex gap-4">
         <NeumorphicLink to="/dsa" label="Problem Solving" isActive={isActive('/dsa')} />
         <NeumorphicLink to="/webdev" label="Web Development" isActive={isActive('/webdev')} />
-        <NeumorphicLink to="/system-design" label="System Design" isActive={isActive('/system-design')} />
-        <NeumorphicLink to="/login" label="Login" isActive={isActive('/login')} />
+        {/* <NeumorphicLink to="/system-design" label="System Design" isActive={isActive('/system-design')} />
+        <NeumorphicLink to="/login" label="Login" isActive={isActive('/login')} /> */}
       </div>
     </nav>
   );

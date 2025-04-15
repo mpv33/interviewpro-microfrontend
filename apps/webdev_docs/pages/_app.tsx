@@ -5,16 +5,34 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Analytics } from '@vercel/analytics/react';
 
+// Utility functions moved outside of useEffect
+const capitalizeFirstLetter = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const generatePageTitle = (path: string): string | null => {
+  const segments = path.split('/').filter(Boolean);
+  if (segments.length === 1) {
+    return `InterviewPro-${capitalizeFirstLetter(segments[0])}`;
+  } else if (segments.length > 1) {
+    return segments.map(segment => capitalizeFirstLetter(segment)).join('-');
+  }
+  return null;
+};
+
+// Default page descriptions
+const pageDescriptions: Record<string, string> = {
+  '/javascript': 'Ace JavaScript Interview Questions: Dive into essential concepts and ace your JavaScript interviews!',
+  '/react': 'Master ReactJS Interview Questions: Explore React concepts and excel in ReactJS interviews!',
+  '/dsa': 'Crack DSA Interviews: Dive into Data Structures and Algorithms to crack technical interviews!',
+  // Add more pages and their descriptions as needed
+};
+
+const defaultDescription =
+  'InterviewPro offers high-quality free technical content on Data Structures and Algorithms (DSA), JavaScript, ReactJS, NodeJs, and NextJs, catering to last-minute preparation for the most commonly asked interview questions.';
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-
-  // Define page descriptions for specific pages
-  const pageDescriptions: Record<string, string> = {
-    '/javascript': 'Ace JavaScript Interview Questions: Dive into essential concepts and ace your JavaScript interviews!',
-    '/react': 'Master ReactJS Interview Questions: Explore React concepts and excel in ReactJS interviews!',
-    '/dsa': 'Crack DSA Interviews: Dive into Data Structures and Algorithms to crack technical interviews!',
-    // Add more pages and their descriptions as needed
-  };
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -28,19 +46,6 @@ export default function App({ Component, pageProps }: AppProps) {
         metaDescriptionTag.setAttribute('content', pageDescription);
       }
     };
-    const generatePageTitle = (path: string): string | null => {
-      const segments = path.split('/').filter(Boolean);
-      if (segments.length === 1) {
-        return `InterviewPro-${capitalizeFirstLetter(segments[0])}`;
-      } else if (segments.length > 1) {
-        return segments.map(segment => capitalizeFirstLetter(segment)).join('-');
-      }
-      return null;
-    };
-
-    const capitalizeFirstLetter = (str: string): string => {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    };
 
     router.events.on('routeChangeComplete', handleRouteChange);
 
@@ -48,10 +53,6 @@ export default function App({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
-
-  // Default description for the entire site
-  const defaultDescription =
-    'InterviewPro offers high-quality free technical content on Data Structures and Algorithms (DSA), JavaScript, ReactJS, NodeJs, and NextJs, catering to last-minute preparation for the most commonly asked interview questions.';
 
   return (
     <>

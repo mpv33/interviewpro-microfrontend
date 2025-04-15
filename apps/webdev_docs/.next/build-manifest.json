@@ -1,31 +1,291 @@
 {
   "polyfillFiles": [
-    "static/chunks/polyfills.js"
+    "static/chunks/polyfills-78c92fac7aa8fdd8.js"
   ],
-  "devFiles": [
-    "static/chunks/react-refresh.js"
-  ],
+  "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/development/_buildManifest.js",
-    "static/development/_ssgManifest.js"
+    "static/I1mlQ8JOL8w9rxeS6uApi/_buildManifest.js",
+    "static/I1mlQ8JOL8w9rxeS6uApi/_ssgManifest.js"
   ],
   "rootMainFiles": [],
   "pages": {
     "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/index-1c2cc51c8ad577be.js"
     ],
     "/_app": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/_app.js"
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/ebd679b94beb0ed6.css",
+      "static/chunks/pages/_app-8109740ddc3d4e2c.js"
     ],
     "/_error": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/_error.js"
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/chunks/pages/_error-54de1933a164a1ff.js"
+    ],
+    "/javascript": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript-b2faeedef6c4cd81.js"
+    ],
+    "/javascript/advanced-javascript": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/advanced-javascript-d01d8f85ac0975f4.js"
+    ],
+    "/javascript/asynchronous-js": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/asynchronous-js-55c52603c9491cfe.js"
+    ],
+    "/javascript/coding-challenges": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/coding-challenges-838129e2b62e3f5e.js"
+    ],
+    "/javascript/dom-events": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/dom-events-c953b46906b4f0b4.js"
+    ],
+    "/javascript/functions": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/functions-0ecfaf37455b5f4e.js"
+    ],
+    "/javascript/fundamentals": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/fundamentals-e6561b72912d5c56.js"
+    ],
+    "/javascript/objects-array": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/objects-array-ece2964bc32a7b89.js"
+    ],
+    "/javascript/performance-optimization": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/performance-optimization-f8d510c1f1c4d489.js"
+    ],
+    "/javascript/prototypes-inheritance": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/prototypes-inheritance-0e8bd81cf0a87fc3.js"
+    ],
+    "/javascript/tricky-js-output": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/javascript/tricky-js-output-e5139b68cddc5250.js"
+    ],
+    "/nextjs": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs-79b71d9375453ec5.js"
+    ],
+    "/nextjs/advanced-nextjs": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/advanced-nextjs-7971a15f87597203.js"
+    ],
+    "/nextjs/api-routes": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/api-routes-b79a348698041d09.js"
+    ],
+    "/nextjs/coding-challenges": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/coding-challenges-a867a39053a4d633.js"
+    ],
+    "/nextjs/deployment": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/deployment-fcaeec2e7c772d16.js"
+    ],
+    "/nextjs/dynamic-routing": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/dynamic-routing-c978b7268591f082.js"
+    ],
+    "/nextjs/fundamentals": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/fundamentals-8355b82c708ce472.js"
+    ],
+    "/nextjs/performance-optimization": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/performance-optimization-8251d7996e1a1efb.js"
+    ],
+    "/nextjs/seo": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/seo-a6e110e0f775eeea.js"
+    ],
+    "/nextjs/ssg-ssr": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/ssg-ssr-c2354a0c2d7a35f1.js"
+    ],
+    "/nextjs/testing": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/nextjs/testing-2f52f674668b3e55.js"
+    ],
+    "/reactjs": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs-d039166283fc497c.js"
+    ],
+    "/reactjs/advanced-react": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/advanced-react-9d4091d4df681d3a.js"
+    ],
+    "/reactjs/coding-challenges": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/coding-challenges-cf56e4d5da9dd35e.js"
+    ],
+    "/reactjs/fundamentals": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/fundamentals-ff7fc84eeee8fb25.js"
+    ],
+    "/reactjs/performance-optimization": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/performance-optimization-d6c552a5e77d7dfe.js"
+    ],
+    "/reactjs/react-hooks": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/react-hooks-3951999a6109c62c.js"
+    ],
+    "/reactjs/react-routing": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/react-routing-358122de8fa004a4.js"
+    ],
+    "/reactjs/react-testing": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/react-testing-814f2801c46f63cd.js"
+    ],
+    "/reactjs/state-management": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/reactjs/state-management-eaf70547878cff6d.js"
+    ],
+    "/release": [
+      "static/chunks/webpack-38cee4c0e358b1a3.js",
+      "static/chunks/framework-7a7e500878b44665.js",
+      "static/chunks/main-705f7b17ee4ac5be.js",
+      "static/css/0a446a3ac200bf98.css",
+      "static/chunks/207-54a9596f848bebfb.js",
+      "static/chunks/pages/release-a91f43272e7531c3.js"
     ]
   },
   "ampFirstPages": []
