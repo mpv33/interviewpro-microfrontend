@@ -1,16 +1,22 @@
-import React, { Suspense } from 'react';
+// src/App.jsx
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Suspense } from 'react';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import DSA from './pages/DSA';
+import WebDev from './pages/WebDev';
 
-const RemoteDSAApp = React.lazy(() => import('dsa/DSAApp'));
-
-function App() {
+export default function App() {
   return (
-    <div>
-      <p className='text-4xl'>Host Application</p>
-      <Suspense fallback={<div>Loading...</div>}>
-        <RemoteDSAApp />
+    <Router>
+      <Navbar />
+      <Suspense fallback={<div className="p-4">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dsa" element={<DSA />} />
+          <Route path="/webdev" element={<WebDev />} />
+        </Routes>
       </Suspense>
-    </div>
+    </Router>
   );
 }
-
-export default App;
