@@ -18,10 +18,10 @@ const NeumorphicLink: React.FC<NeumorphicLinkProps> = ({ to, label, isActive, on
       className={`px-5 py-2 rounded-2xl font-medium text-sm sm:text-base 
         ${
           isActive
-            ? 'text-blue-500 shadow-[inset_4px_4px_6px_#d1d9e6,inset_-4px_-4px_6px_#ffffff]'
-            : 'text-gray-600 shadow-[inset_2px_2px_4px_#d1d9e6,inset_-2px_-2px_4px_#ffffff] hover:shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]'
+            ? 'text-blue-500 shadow-[inset_2px_2px_4px_#d1d9e6,inset_-2px_-2px_4px_#ffffff]'
+            : 'text-gray-600 shadow-[inset_1px_1px_3px_#d1d9e6,inset_-1px_-1px_3px_#ffffff] hover:shadow-[4px_4px_10px_#d1d9e6,-4px_-4px_10px_#ffffff]'
         }
-        transition-all duration-300 ease-in-out bg-[#e0e5ec] block text-center`}
+        transition-all duration-300 ease-in-out bg-white block text-center`}
     >
       {label}
     </Link>
@@ -38,8 +38,8 @@ const Navbar: React.FC = () => {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 px-4 py-3 shadow-sm bg-[#e0e5ec] w-full">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <nav className="sticky top-0 z-50 px-4 py-3 bg-white shadow-[inset_4px_4px_6px_#d1d9e6,inset_-4px_-4px_6px_#ffffff] w-full">
+      <div className="mx-2 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center" onClick={closeMenu}>
           <AnimatedLogo />
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
 
         {/* Hamburger Icon for Mobile */}
         <div className="sm:hidden">
-          <button onClick={toggleMenu} className="p-2 rounded-full shadow-neumorphic bg-[#e0e5ec]">
+          <button onClick={toggleMenu} className="p-2 rounded-full shadow-[inset_2px_2px_4px_#d1d9e6,inset_-2px_-2px_4px_#ffffff] bg-white">
             {menuOpen ? <FiX className="w-6 h-6 text-gray-700" /> : <FiMenu className="w-6 h-6 text-gray-700" />}
           </button>
         </div>
@@ -56,6 +56,7 @@ const Navbar: React.FC = () => {
         <div className="hidden sm:flex gap-4 items-center">
           <NeumorphicLink to="/dsa" label="Problem Solving" isActive={isActive('/dsa')} />
           <NeumorphicLink to="/webdev" label="Web Development" isActive={isActive('/webdev')} />
+          {/* <NeumorphicLink to="/login" label="Sign In" isActive={isActive('/login')} /> */}
         </div>
       </div>
 

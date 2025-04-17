@@ -38,14 +38,14 @@ const config: DocsThemeConfig = {
       <meta name="author" content="Mateshwari verma" />
     </React.Fragment>
   ),
-  banner: {
-    key: '2.0.0-release ',
-    text: (
-      <a href="/release" target="_blank">
-        🎉 InterviewPro Info v2.0.0: Stay Informed about the Upcoming Release →
-      </a>
-    ),
-  },
+  // banner: {
+  //   key: '2.0.0-release ',
+  //   text: (
+  //     <a href="/release" target="_blank">
+  //       🎉 InterviewPro Info v2.0.0: Stay Informed about the Upcoming Release →
+  //     </a>
+  //   ),
+  // },
   editLink: {
     text: '',
   },

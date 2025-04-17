@@ -15,3 +15,8 @@
       box-shadow: inset 6px 6px 12px #bec8d2, inset -6px -6px 12px #ffffff;
     }
   }
+
+  /* index.css or global.css */
+body {
+  margin: 0;
+}

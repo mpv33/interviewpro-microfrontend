@@ -1,17 +1,30 @@
 {
   "index": {
-    "title": "Getting started"
+    "title": "Getting started",
+    "type":"page"
   },
   "javascript": {
-    "title": "JavaScript"
+    "title": "JavaScript",
+    "type":"page"
   },
   "reactjs": {
-    "title": "ReactJS"
+    "title": "ReactJS",
+    "type":"page"
   },
   "nextjs": {
-    "title": "NextJs"
+    "title": "NextJs",
+    "type":"page"
   },
   "release":{
-     "display":"hidden"
+     "display":"hidden",
+     "type":"page"
+  },
+  "machine-coding":{
+    "title": "Machine Coding Challenges",
+    "type":"page"
+  },
+  "frontend-system-design":{
+    "title": "Frontned System Design",
+    "type":"page"
   }
 }

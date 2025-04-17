@@ -1,4 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
+import NeomorphicLoader from '../components/Loader';
 
 // Lazy load the remote component
 const RemoteDSAApp = React.lazy(() => import('dsa/DSAApp'));
@@ -23,8 +24,8 @@ const DSA: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Suspense fallback={<div className="text-center text-gray-600">Loading DSA Module...</div>}>
+    <div className="min-h-screen bg-gray-50">
+      <Suspense fallback={<NeomorphicLoader />}>
         <RemoteDSAApp />
       </Suspense>
     </div>

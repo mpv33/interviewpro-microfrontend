@@ -1,0 +1,44 @@
+/* Neomorphic Loader - Professional Circular Spinner */
+
+.loader-container {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.loader-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  box-shadow:
+    4px 4px 8px #bbcfda,
+    -4px -4px 8px #ffffff,
+    inset 2px 2px 4px rgba(209, 217, 230, 0.35),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+
+.loader-ring::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top: 3px solid #888;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

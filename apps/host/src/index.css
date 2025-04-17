@@ -44,24 +44,4 @@
 
 
 
-  /* Neumorphic Inset Shadow */
-.shadow-neumorphic-inset {
-  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.8), inset -4px -4px 6px rgba(0, 0, 0, 0.2);
-}
 
-.shadow-neumorphic-inset:hover {
-  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.6), inset -4px -4px 6px rgba(0, 0, 0, 0.4),
-              4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.2);
-}
-
-/* General Neomorphic Button Style */
-.shadow-neumorphic-button {
-  background-color: #e0e5ec;
-  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.8), inset -4px -4px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease-in-out;
-}
-
-.shadow-neumorphic-button:hover {
-  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.6), inset -4px -4px 6px rgba(0, 0, 0, 0.4),
-              4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.2);
-}
