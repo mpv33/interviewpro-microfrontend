@@ -3,21 +3,15 @@
     "title": "Getting started"
   },
   "javascript": {
-    "title": "JavaScript",
-    "defaultOpen": true
+    "title": "JavaScript"
   },
   "reactjs": {
-    "title": "ReactJS",
-    "defaultOpen": false
+    "title": "ReactJS"
   },
   "nextjs": {
-    "title": "NextJs",
-    "defaultOpen": false
+    "title": "NextJs"
   },
   "release":{
-     "display":"hidden",
-     "theme": {
-      "navbar": false 
-    }
+     "display":"hidden"
   }
 }

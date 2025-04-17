@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import DSA from './pages/DSA';
 import WebDev from './pages/WebDev';
+import './App.css'
 
 export default function App() {
   return (

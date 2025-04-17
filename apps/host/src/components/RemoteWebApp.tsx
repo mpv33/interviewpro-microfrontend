@@ -1,4 +1,4 @@
-// src/components/RemoteWebApp.jsx
+
 export default function RemoteWebApp() {
     return (
       <div className="h-[calc(100vh-80px)]">
@@ -11,4 +11,3 @@ export default function RemoteWebApp() {
       </div>
     );
   }
-  

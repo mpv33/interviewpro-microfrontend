@@ -8,23 +8,60 @@
 
 
 #animated-text-header {
-    font-family: "Cairo";
-    background: linear-gradient(90deg, #4A90E2, #42A5F5, #53C6E7, #66BB6A, #A3D755, #D4E157, #FFEE58, #FFCA28, #FFA726, #FF7043, #FF6A6A, #EC9F9F, #ED64A6, #F06292, #F48FB1, #AB47BC, #7E57C2, #5C6BC0, #42A5F5, #29B6F6);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: animate-gradient 5s linear infinite;
-  }
+  font-family: "Cairo", sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  text-align: center;
+  font-style: normal;
+  background: linear-gradient(
+    270deg,
+    #4a90e2,
+    #66bb6a,
+    #a3d755,
+    #f48fb1,
+    #ab47bc,
+    #42a5f5
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animate-gradient 10s ease-in-out infinite;
+  filter: drop-shadow(2px 2px 4px rgba(255, 255, 255, 0.3))
+          drop-shadow(-2px -2px 4px rgba(0, 0, 0, 0.05));
+}
 
-  @keyframes animate-gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    100% {
-      background-position: 200% 50%;
-    }
+@keyframes animate-gradient {
+  0% {
+    background-position: 0% 50%;
   }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
-  .nextra-nav-container{
-     display: none !important;
-  }
+
+
+  /* Neumorphic Inset Shadow */
+.shadow-neumorphic-inset {
+  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.8), inset -4px -4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-neumorphic-inset:hover {
+  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.6), inset -4px -4px 6px rgba(0, 0, 0, 0.4),
+              4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* General Neomorphic Button Style */
+.shadow-neumorphic-button {
+  background-color: #e0e5ec;
+  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.8), inset -4px -4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.shadow-neumorphic-button:hover {
+  box-shadow: inset 4px 4px 6px rgba(255, 255, 255, 0.6), inset -4px -4px 6px rgba(0, 0, 0, 0.4),
+              4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.2);
+}
