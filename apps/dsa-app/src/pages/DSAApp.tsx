@@ -14,11 +14,11 @@ const DSAApp = () => (
         </p>
       </section>
 
-      {/* Neomorphic Info Cards */}
+      {/* Info Cards */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
         {/* What is DSA Module */}
-        <div className="bg-white p-6 rounded-2xl shadow-[inset_6px_6px_10px_#d1d9e6,inset_-6px_-6px_10px_#ffffff]">
+        <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl hover:scale-105 transform transition duration-300">
           <h2 className="text-xl font-semibold text-gray-700 mb-2">📘 What is the DSA Module?</h2>
           <p className="text-gray-600 text-base leading-relaxed">
             A carefully curated set of topic-wise DSA questions to help software engineers quickly revise and strengthen problem-solving skills right before an interview.
@@ -26,7 +26,7 @@ const DSAApp = () => (
         </div>
 
         {/* Why Choose InterviewPro for DSA? */}
-        <div className="bg-white p-6 rounded-2xl shadow-[inset_6px_6px_10px_#d1d9e6,inset_-6px_-6px_10px_#ffffff]">
+        <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl hover:scale-105 transform transition duration-300">
           <h2 className="text-xl font-semibold text-gray-700 mb-3">🎯 Why Choose InterviewPro for DSA?</h2>
           <ul className="list-disc list-inside text-gray-600 space-y-2 text-base leading-relaxed">
             <li>Curated set of most-asked DSA questions tagged by companies</li>
@@ -38,7 +38,7 @@ const DSAApp = () => (
         </div>
 
         {/* Data Structures Topics */}
-        <div className="bg-white p-6 rounded-2xl shadow-[inset_6px_6px_10px_#d1d9e6,inset_-6px_-6px_10px_#ffffff]">
+        <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl hover:scale-105 transform transition duration-300">
           <h2 className="text-xl font-semibold text-gray-700 mb-2">📂 Data Structures</h2>
           <ul className="list-disc list-inside text-gray-600 text-base space-y-1">
             <li>Arrays & Strings</li>
@@ -50,7 +50,7 @@ const DSAApp = () => (
         </div>
 
         {/* Algorithm Topics */}
-        <div className="bg-white p-6 rounded-2xl shadow-[inset_6px_6px_10px_#d1d9e6,inset_-6px_-6px_10px_#ffffff]">
+        <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl hover:scale-105 transform transition duration-300">
           <h2 className="text-xl font-semibold text-gray-700 mb-2">🔧 Algorithms</h2>
           <ul className="list-disc list-inside text-gray-600 text-base space-y-1">
             <li>Recursion & Backtracking</li>
@@ -66,7 +66,7 @@ const DSAApp = () => (
       <div className="text-center mt-8">
         <Link
           to="/dsa/problem-list"
-          className="inline-block bg-white text-gray-700 px-6 py-3 rounded-xl shadow-[inset_6px_6px_10px_#d1d9e6,inset_-6px_-6px_10px_#ffffff] hover:shadow-[inset_4px_4px_8px_#d1d9e6,inset_-4px_-4px_8px_#ffffff] transition font-medium"
+          className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-indigo-700 transition font-medium"
         >
           🔍 Start Practicing DSA Now
         </Link>

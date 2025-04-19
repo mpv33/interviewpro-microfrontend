@@ -5,7 +5,7 @@ import CustomFooter from '../components/Footer';
 
 export default function MainLayout() {
   return (
-    <div className="bg-white min-h-screen flex flex-col">
+    <div className="bg-white">
       <Navbar />
       <main className="flex-grow">
         <Outlet />
